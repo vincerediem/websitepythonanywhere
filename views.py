@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
 views = Blueprint('views', __name__)
 
@@ -6,8 +6,11 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("home.html")
 
-@views.route('/RSI2')
+@views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():
+    data = request.form
+    if request.method == 'POST':
+        stock = request.form.get('stock')
     return render_template("RSI2.html")
 
 @views.route('/SMA')

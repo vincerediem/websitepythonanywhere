@@ -8,7 +8,7 @@ def home():
 
 @views.route('/RSI2')
 def RSI2():
-    return "<h1>RSI2</h1>"
+    return render_template("RSI2.html")
 
 @views.route('/SMA')
 def SMA():

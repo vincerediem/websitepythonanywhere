@@ -9,14 +9,15 @@ def home():
 @views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():
     data = request.form
-    next_page = ""
-    if request.method == 'POST':
+    if request.method == 'POST': #if a stock is entered, will take you to results page
         stock_list = request.form.get('stock')
-        next_page = "result.html"
-    else:
-        next_page = "RSI2.html"
+        return render_template('result.html')
+    else: #else reruns page
+        return render_template('RSI2.html')
 
-    return render_template(next_page)
+
+@views.route('/RSI2', methods=['GET', 'POST'])
+def result():
 
 @views.route('/SMA')
 def SMA():

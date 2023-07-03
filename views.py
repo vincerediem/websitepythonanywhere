@@ -1,4 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+import sys
+sys.path.append(r"C:\Users\kopen\OneDrive\Desktop\Code\Algo Trading\RSI\RSI 2")
+import RSIv2_html as rsi2
 
 views = Blueprint('views', __name__)
 
@@ -16,12 +19,10 @@ def RSI2():
 
 @views.route('/RSI2/<stock>')
 def RSI2_result(stock):
-    # Perform any additional operations based on the stock value if needed
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold = rsi2.backtest_strategy(stock)
+    final_metrics = rsi2.return_final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses)
+    return render_template("result.html", stock=stock, positions_sold=positions_sold, final_metrics=final_metrics)
 
-    return render_template("result.html", stock=stock)
-
-'''@views.route('/RSI2', methods=['GET', 'POST'])
-def result():'''
 
 @views.route('/SMA')
 def SMA():

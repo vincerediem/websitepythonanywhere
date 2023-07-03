@@ -1,7 +1,5 @@
-{% extends "base.html" %} {% block title %}{{stock}}{% endblock %} 
-{% block content %} <h1> Here is how {{stock}} performed:</h1> {% endblock %}
-
-
+{% extends "base.html" %} {% block title %}Backtest Results{% endblock %} 
+{% block content %} <h1>Backtesting Results for {{stock}}:</h1> 
 <div class="row">
     <div class="col-lg-12">
       <h2>Graph</h2>
@@ -10,13 +8,14 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <h2>Text Variable 1</h2>
+      <h2>Final Metics:</h2>
       <p>Value 1: Lorem ipsum dolor sit amet.</p>
       <p>Value 2: Consectetur adipiscing elit.</p>
     </div>
     <div class="col-lg-6">
-      <h2>Text Variable 2</h2>
+      <h2>Trade Specific Metrics:</h2>
       <p>Value 1: Sed do eiusmod tempor incididunt.</p>
       <p>Value 2: Ut labore et dolore magna aliqua.</p>
     </div>
   </div>
+  {% endblock %}

@@ -16,8 +16,8 @@ def RSI2():
         return render_template('RSI2.html')
 
 
-@views.route('/RSI2', methods=['GET', 'POST'])
-def result():
+'''@views.route('/RSI2', methods=['GET', 'POST'])
+def result():'''
 
 @views.route('/SMA')
 def SMA():

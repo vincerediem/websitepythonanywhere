@@ -28,6 +28,7 @@ block content %}
   </div>
   <div class="col-lg-6">
     <h2>Trade Specific Metrics:</h2>
+    {{ df|safe }}
     {% for stock, trade_details in positions_sold.items() %}
     <div class="trade">
       <h3>Trade ID: {{ stock }}</h3>
@@ -41,11 +42,10 @@ block content %}
           <th>Percent Gain</th>
           <th>Trade Gains</th>
         </tr>
-        {{ positions_sold[stock]['sold_price']}}
-        {% for position in trade_details %}
+        {{ positions_sold[stock]['sold_price']}} {% for position in
+        trade_details %}
         <tr>
           <td>{{ positions_sold[stock]['sold_price']}}</td>
-
         </tr>
         {% endfor %}
       </table>

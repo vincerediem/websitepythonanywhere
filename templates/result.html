@@ -1,31 +1,57 @@
-{% extends "base.html" %} {% block title %}Backtest Results{% endblock %} 
-{% block content %} <h1>Backtesting Results for {{stock_list}}:</h1> 
+{% extends "base.html" %} {% block title %}Backtest Results{% endblock %} {%
+block content %}
+<h1>Backtesting Results for {{stock_list}}:</h1>
 <div class="row">
-    <div class="col-lg-12">
-      <h2>Graph</h2>
-      <img src="path_to_your_python_generated_graph.png" alt="Graph" class="img-fluid">
-    </div>
+  <div class="col-lg-12">
+    <h2>Graph</h2>
+    <img
+      src="path_to_your_python_generated_graph.png"
+      alt="Graph"
+      class="img-fluid"
+    />
   </div>
-  <div class="row">
-    <div class="col-lg-6">
-      <h2>Final Metics:</h2>
-      <p>Initial account balance: ${{ final_metrics.initial_balance }}</p>
-      <p>Final account balance: ${{ final_metrics.final_balance }}</p>
-      <p>You made: {{ final_metrics.profit_percent }}%</p>
-      <p>You made: ${{ final_metrics.profit_absolute }}</p>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <h2>Final Metics:</h2>
+    <p>Initial account balance: ${{ final_metrics.initial_balance }}</p>
+    <p>Final account balance: ${{ final_metrics.final_balance }}</p>
+    <p>You made: {{ final_metrics.profit_percent }}%</p>
+    <p>You made: ${{ final_metrics.profit_absolute }}</p>
 
-      {% for key, value in final_metrics.items() %}
-          {% if key.endswith('final_share_price') %}
-              <p>You have shares worth ${{ value }} at end of period</p>
-          {% elif key.endswith('total_gains_losses') %}
-              <p>Total gains/losses for {{ key.split('_')[0] }}: {{ value }}</p>
-          {% endif %}
-    {% endfor %}
-    </div>
-    <div class="col-lg-6">
-      <h2>Trade Specific Metrics:</h2>
-      <p>{{positions_sold}}</p>
-      <p>Value 2: Ut labore et dolore magna aliqua.</p>
-    </div>
+    {% for key, value in final_metrics.items() %} {% if
+    key.endswith('final_share_price') %}
+    <p>You have shares worth ${{ value }} at end of period</p>
+    {% elif key.endswith('total_gains_losses') %}
+    <p>Total gains/losses for {{ key.split('_')[0] }}: {{ value }}</p>
+    {% endif %} {% endfor %}
   </div>
-  {% endblock %}
+  <div class="col-lg-6">
+    <h2>Trade Specific Metrics:</h2>
+    {% for stock, trade_details in positions_sold.items() %}
+    <div class="trade">
+      <h3>Trade ID: {{ stock }}</h3>
+      <table>
+        <tr>
+          <th>Sold Price</th>
+          <th>Purchase Price</th>
+          <th>Purchase Date</th>
+          <th>Sold Date</th>
+          <th>Buy Price</th>
+          <th>Percent Gain</th>
+          <th>Trade Gains</th>
+        </tr>
+        {{ positions_sold[stock]['sold_price']}}
+        {% for position in trade_details %}
+        <tr>
+          <td>{{ positions_sold[stock]['sold_price']}}</td>
+
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endfor %}
+    <p>Value 2: Ut labore et dolore magna aliqua.</p>
+  </div>
+</div>
+{% endblock %}

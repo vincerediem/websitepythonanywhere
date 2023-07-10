@@ -21,7 +21,7 @@ block content %}
       {% elif key.endswith('total_efficiency') %} Total percent gain for {{
       key.split('_')[0] }}: %{{ "%.2f"|format(value*100) }} {% elif
       key.endswith('total_gains_losses') %} Total gains/losses for {{
-      key.split('_')[0] }}: ${{ value }} <br />
+      key.split('_')[0] }}: ${{ "%.2f"|format(value) }} <br />
       {% elif key.endswith('ave_gains_losses') %} Average gains/losses for {{
       key.split('_')[0] }}: ${{ "%.2f"|format(value) }} <br />
       <br />

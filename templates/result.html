@@ -1,14 +1,30 @@
-{% extends "base.html" %} 
-
-{% block title %}Backtest Results{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Backtest Results{% endblock %} {%
+block content %}
 <h1>Backtesting Results for {{stock_list}}:</h1>
 
 <div class="row">
-  <div class="col-lg-12">
+  <div class="col-lg-9">
     <h2>Graph</h2>
     <div id="plot-container">{{ plot_html|safe }}</div>
+  </div>
+  <div class="col-lg-3">
+    {% for key, value in final_metrics.items() %} {% if
+    key.endswith('ave_efficiency') %}
+    <!-- Highlighted metrics -->
+    <div class="card bg-light mb-3">
+      <div class="card-header">Key Metrics</div>
+      <div class="card-body">
+        <h3 class="card-title">
+          <h4 class="card-title">
+            <i class="fas fa-chart-line"></i> Average Percent Gain per Trade
+          </h4>
+          <h4>
+            <span class="text-success">{{ "%.2f"|format(value*100) }}%</span>
+          </h4>
+        </h3>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
   </div>
 </div>
 
@@ -21,54 +37,78 @@
       <div class="card-header">Key Metrics</div>
       <div class="card-body">
         <h3 class="card-title">
-          <i class="fas fa-wallet"></i> Profit: <span class="text-success">${{ "%.2f"|format(final_metrics.profit_absolute) }}</span> 
-          (<span class="text-success">+{{ "%.2f"|format(final_metrics.profit_percent*100) }}%</span>)
+          <i class="fas fa-wallet"></i> Profit:
+          <span class="text-success"
+            >${{ "%.2f"|format(final_metrics.profit_absolute) }}</span
+          >
+          (<span class="text-success"
+            >+{{ "%.2f"|format(final_metrics.profit_percent*100) }}%</span
+          >)
         </h3>
-        <p class="card-text">From an initial balance of ${{ final_metrics.initial_balance }} to a final balance of ${{ final_metrics.final_balance }}.</p>
+        <p class="card-text">
+          From an initial balance of ${{ final_metrics.initial_balance }} to a
+          final balance of ${{ final_metrics.final_balance }}.
+        </p>
       </div>
     </div>
 
     {% for key, value in final_metrics.items() %}
-      <!-- Other metrics -->
-      <div class="card bg-light mb-3">
-        <div class="card-body">
-          {% if key.endswith('ave_efficiency') %}
-            <h4 class="card-title"><i class="fas fa-chart-line"></i> Average Percent Gain per Trade</h4>
-            <p class="card-text">{{ "%.2f"|format(value*100) }}%</p>
-          {% elif key.endswith('total_efficiency') %}
-            <h4 class="card-title"><i class="fas fa-chart-pie"></i> Total Percent Gain</h4>
-            <p class="card-text">{{ "%.2f"|format(value*100) }}% for {{ key.split('_')[0] }}</p>
-          {% elif key.endswith('total_gains_losses') %}
-            <h4 class="card-title"><i class="fas fa-balance-scale"></i> Total Gains/Losses</h4>
-            <p class="card-text">${{ "%.2f"|format(value) }} for {{ key.split('_')[0] }}</p>
-          {% elif key.endswith('ave_gains_losses') %}
-            <h4 class="card-title"><i class="fas fa-dollar-sign"></i> Average Gains/Losses</h4>
-            <p class="card-text">${{ "%.2f"|format(value) }} for {{ key.split('_')[0] }}</p>
-          {% elif key.endswith('num_of_trades') %}
-            <h4 class="card-title"><i class="fas fa-exchange-alt"></i> Number of Trades</h4>
-            <p class="card-text">{{ value }} for {{ key.split('_')[0] }}</p>
-          {% elif key.endswith('final_share_price') %}
-            <h4 class="card-title"><i class="fas fa-money-check-alt"></i> Final Share Price</h4>
-            <p class="card-text">You have shares worth ${{ value }} at end of period</p>
-          {% endif %}
-        </div>
+    <!-- Other metrics -->
+    <div class="card bg-light mb-3">
+      <div class="card-body">
+        {% if key.endswith('ave_efficiency') %}
+        <h4 class="card-title">
+          <i class="fas fa-chart-line"></i> Average Percent Gain per Trade
+        </h4>
+        <p class="card-text">{{ "%.2f"|format(value*100) }}%</p>
+        {% elif key.endswith('total_efficiency') %}
+        <h4 class="card-title">
+          <i class="fas fa-chart-pie"></i> Total Percent Gain
+        </h4>
+        <p class="card-text">
+          {{ "%.2f"|format(value*100) }}% for {{ key.split('_')[0] }}
+        </p>
+        {% elif key.endswith('total_gains_losses') %}
+        <h4 class="card-title">
+          <i class="fas fa-balance-scale"></i> Total Gains/Losses
+        </h4>
+        <p class="card-text">
+          ${{ "%.2f"|format(value) }} for {{ key.split('_')[0] }}
+        </p>
+        {% elif key.endswith('ave_gains_losses') %}
+        <h4 class="card-title">
+          <i class="fas fa-dollar-sign"></i> Average Gains/Losses
+        </h4>
+        <p class="card-text">
+          ${{ "%.2f"|format(value) }} for {{ key.split('_')[0] }}
+        </p>
+        {% elif key.endswith('num_of_trades') %}
+        <h4 class="card-title">
+          <i class="fas fa-exchange-alt"></i> Number of Trades
+        </h4>
+        <p class="card-text">{{ value }} for {{ key.split('_')[0] }}</p>
+        {% elif key.endswith('final_share_price') %}
+        <h4 class="card-title">
+          <i class="fas fa-money-check-alt"></i> Final Share Price
+        </h4>
+        <p class="card-text">
+          You have shares worth ${{ value }} at end of period
+        </p>
+        {% endif %}
       </div>
+    </div>
     {% endfor %}
 
     <h3>Open Positions at end of period:</h3>
     <div class="card bg-light mb-3">
-      <div class="card-body">
-        {{ open_df|safe }}
-      </div>
+      <div class="card-body">{{ open_df|safe }}</div>
     </div>
   </div>
 
   <div class="col-lg-8">
     <h2>Trade Specific Metrics:</h2>
     <div class="card bg-light">
-      <div class="card-body">
-        {{ closed_df|safe }}
-      </div>
+      <div class="card-body">{{ closed_df|safe }}</div>
     </div>
   </div>
 </div>

@@ -4,11 +4,7 @@ block content %}
 <div class="row">
   <div class="col-lg-12">
     <h2>Graph</h2>
-    <img
-      src="path_to_your_python_generated_graph.png"
-      alt="Graph"
-      class="img-fluid"
-    />
+    <div id="plot-container">{{ plot_html|safe }}</div>
   </div>
 </div>
 <div class="row">

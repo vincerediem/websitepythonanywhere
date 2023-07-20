@@ -1,2 +1,36 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} 
-{% block content %} <h1> This is the home page!</h1> {% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1>Welcome to our Trading Application</h1>
+  <p>Analyze, predict and learn!</p> 
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <h2>RSI2 Analysis</h2>
+      <p>Perform advanced RSI2 analysis on your selected stocks. Just input the stocks you want to analyze and let the system do the rest.</p>
+      <a class="btn btn-primary" href="/RSI2" role="button">Go to RSI2 Analysis</a>
+    </div>
+    <div class="col-lg-6">
+      <h2>SMA Analysis</h2>
+      <p>Simple Moving Average (SMA) is a great tool to identify the direction of a stock's price trend. Get started with our SMA analysis.</p>
+      <a class="btn btn-primary" href="/SMA" role="button">Go to SMA Analysis</a>
+    </div>
+  </div>
+  
+  <hr>
+  
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h2>Market Overview</h2>
+      <img class="img-fluid" src="your_path_to_financial_graphic" alt="Finance Graphic">
+    </div>
+  </div>
+</div>
+{% endblock %}

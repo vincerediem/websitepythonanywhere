@@ -9,18 +9,27 @@ block content %}
   </div>
   <div class="col-lg-3">
     {% for key, value in final_metrics.items() %} {% if
-    key.endswith('ave_efficiency') %}
+    key.endswith('ave_efficiency') or key.endswith('total_efficiency')%}
     <!-- Highlighted metrics -->
     <div class="card bg-light mb-3">
-      <div class="card-header">Key Metrics</div>
       <div class="card-body">
         <h3 class="card-title">
+          {% if key.endswith('ave_efficiency') %}
           <h4 class="card-title">
-            <i class="fas fa-chart-line"></i> Average Percent Gain per Trade
+            <i class="fas fa-chart-line"></i> Average Gain per Trade:
           </h4>
-          <h4>
+          <h3>
             <span class="text-success">{{ "%.2f"|format(value*100) }}%</span>
+          </h3>
+          {% elif key.endswith('total_efficiency') %}
+          <h4 class="card-title">
+            <i class="fas fa-chart-pie"></i> Total Percent Gain:
           </h4>
+          <h4 class="card-text">
+            <span class="text-success">{{ "%.2f"|format(value*100) }}%</span>
+            for {{ key.split('_')[0] }}
+          </h4>
+          {% endif %}
         </h3>
       </div>
     </div>

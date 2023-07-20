@@ -39,20 +39,20 @@ block content %}
 
 <div class="row">
   <div class="col-lg-4">
-    <h2>Final Metrics:</h2>
+    <h2>Other Metrics:</h2>
 
     <!-- Highlighted metrics -->
     <div class="card bg-light mb-3">
       <div class="card-header">Key Metrics</div>
       <div class="card-body">
         <h3 class="card-title">
-          <i class="fas fa-wallet"></i> Profit:
+          <i class="fas fa-wallet"></i> Portfolio Gains:
           <span class="text-success"
             >${{ "%.2f"|format(final_metrics.profit_absolute) }}</span
           >
           (<span class="text-success"
-            >+{{ "%.2f"|format(final_metrics.profit_percent*100) }}%</span
-          >)
+            >+{{ "%.2f"|format(final_metrics.profit_percent) }}%</span
+          >)portfolio increase
         </h3>
         <p class="card-text">
           From an initial balance of ${{ final_metrics.initial_balance }} to a
@@ -65,19 +65,7 @@ block content %}
     <!-- Other metrics -->
     <div class="card bg-light mb-3">
       <div class="card-body">
-        {% if key.endswith('ave_efficiency') %}
-        <h4 class="card-title">
-          <i class="fas fa-chart-line"></i> Average Percent Gain per Trade
-        </h4>
-        <p class="card-text">{{ "%.2f"|format(value*100) }}%</p>
-        {% elif key.endswith('total_efficiency') %}
-        <h4 class="card-title">
-          <i class="fas fa-chart-pie"></i> Total Percent Gain
-        </h4>
-        <p class="card-text">
-          {{ "%.2f"|format(value*100) }}% for {{ key.split('_')[0] }}
-        </p>
-        {% elif key.endswith('total_gains_losses') %}
+        {% if key.endswith('total_gains_losses') %}
         <h4 class="card-title">
           <i class="fas fa-balance-scale"></i> Total Gains/Losses
         </h4>

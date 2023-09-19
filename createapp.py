@@ -5,7 +5,11 @@ def create_app():
     app.config['SECRET_KEY'] = 'skeleton'
 
     from .views import views
-
     app.register_blueprint(views, url_prefix='/')
 
     return app
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-import sys
-sys.path.append(r"C:\Users\kopen\OneDrive\Desktop\Code\Algo Trading\RSI\RSI 2")
 import RSIv2_html as rsi2
 
 views = Blueprint('views', __name__)

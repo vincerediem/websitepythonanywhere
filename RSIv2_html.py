@@ -153,7 +153,7 @@ def trade_metrics(stock, positions_sold):
                 'trade_id': f"{positions_sold[stock]['trade_set'][i]}.{positions_sold[stock]['trade_count'][i]}", #trade set and number of trade
                 'stock': stock.capitalize(),
                 'purchase_date': positions_sold[stock]['purchase_date'][i].date(),
-                'purchase_price': positions_sold[stock]['buy_price'][i],
+                'purchase_price': positions_sold[stock]['purchase_price'][i],
                 'sold_date': positions_sold[stock]['sold_date'][i].date(),
                 'sold_price': positions_sold[stock]['sold_price'][i],
                 'trade_gains': positions_sold[stock]['trade_gains'][i],
@@ -261,3 +261,4 @@ if __name__ == '__main__':
     final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig = backtest_strategy(stock_list(stocks))
     trades_metrics, closed_df = trade_metrics(stock, positions_sold)
     final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses)
+    print(closed_df)

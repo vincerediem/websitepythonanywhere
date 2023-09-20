@@ -94,9 +94,8 @@ def buy_stock(stock, num_shares, row, positions, cash, index):
         positions[stock] = {
             'num_shares': [num_shares],
             #purchase price includes price of all shares, this will change if I change share amount
-            'purchase_price': [row['close'] * num_shares],
+            'purchase_price': [row['close']],
             'purchase_date': [index],
-            'buy_price' : [row['close']]
         }
     else:
         positions[stock]['num_shares'].append(num_shares)
@@ -242,8 +241,12 @@ def backtest_strategy(stock_list):
             rsi_values[stock].append(row['rsi'])
     
     #debugg pannel:
-
+    '''for index, row in historical_data.iterrows():
+        print(row)'''
     #end
+
+    #plots displayed on site
+    fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
 
     #create dataframe of open positions dict
     open_df=pd.DataFrame(positions)
@@ -258,4 +261,3 @@ if __name__ == '__main__':
     final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig = backtest_strategy(stock_list(stocks))
     trades_metrics, closed_df = trade_metrics(stock, positions_sold)
     final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses)
-    print(open_df)

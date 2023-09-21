@@ -172,15 +172,21 @@ def trade_metrics(stock, positions_sold):
     return trades_metrics, closed_df
     
 #function to display final metrics
-def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses):
+def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices):
     final_metrics = {}
-
 
     for stock in positions:
         for i, price in enumerate(positions[stock]['purchase_price']):
-            final_metrics[f"{stock}_final_share_price"] = price / positions[stock]['num_shares'][i]
+            final_metrics[f"{stock}_open_shares_price"] = stock_prices[stock][-1]  # Use current price for open positions
 
-    #total gains/losses
+    # Include final value of any open positions
+    for stock, data in positions.items():
+        num_shares = sum(data['num_shares'])
+        current_price = stock_prices[stock][-1]
+        final_metrics[f"{stock}_open_shares_value"] = num_shares * current_price
+        final_metrics[f"{stock}_num_open_shares"] = num_shares
+
+    # Total gains/losses
     for stock in trade_gains_losses:
         final_metrics[f"{stock}_total_gains_losses"] = sum(trade_gains_losses[stock])
         final_metrics[f'{stock}_num_of_trades'] = len(trade_gains_losses[stock])
@@ -190,7 +196,7 @@ def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_
         final_metrics[f'{stock}_ave_efficiency'] = sum(gains) / len(gains)
         final_metrics[f'{stock}_total_efficiency'] = sum(gains)
 
-    #portfolio change metrics
+    # Portfolio change metrics
     final_metrics['initial_balance'] = initial_balance
     final_metrics['final_balance'] = final_balance
     final_metrics['profit_percent'] = ((final_balance - initial_balance) / initial_balance) * 100
@@ -263,11 +269,14 @@ def backtest_strategy(stock_list):
 
     final_balance = cash + open_positions_value
 
-    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig
+    #debugging
+
+    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices
 
 
 if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")
-    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig = backtest_strategy(stock_list(stocks))
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices = backtest_strategy(stock_list(stocks))
     trades_metrics, closed_df = trade_metrics(stock, positions_sold)
-    final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses)
+    final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices)
+    print(final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices))

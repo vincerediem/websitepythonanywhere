@@ -140,6 +140,18 @@ def sell_stock(stock, row, positions, cash, trade_gains_losses, positions_sold, 
     del positions[stock]
     return cash
 
+def calculate_open_positions_value(positions, stock_prices):
+    open_positions_value = {} # dict that include open positions and their symbols and values
+    total_open_positions_value = 0 # total $ total of open positons
+
+    for stock, data in positions.items():
+        num_shares = sum(data['num_shares'])
+        current_price = stock_prices[stock][-1]
+        open_positions_value[stock] = num_shares * current_price
+        total_open_positions_value += open_positions_value[stock]
+
+    return total_open_positions_value
+
 #makes trades a list of dicts per trade, and creates a dataframe
 def trade_metrics(stock, positions_sold):
     trades_metrics = []
@@ -239,11 +251,6 @@ def backtest_strategy(stock_list):
                 sell_prices[stock].append(row['close'])
             stock_prices[stock].append(row['close'])
             rsi_values[stock].append(row['rsi'])
-    
-    #debugg pannel:
-    '''for index, row in historical_data.iterrows():
-        print(row)'''
-    #end
 
     #plots displayed on site
     fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
@@ -251,7 +258,10 @@ def backtest_strategy(stock_list):
     #create dataframe of open positions dict
     open_df=pd.DataFrame(positions)
 
-    final_balance = cash
+    # calculate value of open positions
+    open_positions_value =  calculate_open_positions_value(positions, stock_prices)
+
+    final_balance = cash + open_positions_value
 
     return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig
 

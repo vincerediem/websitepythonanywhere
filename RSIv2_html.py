@@ -171,24 +171,25 @@ def trade_metrics(stock, positions_sold):
     closed_df = pd.DataFrame(trades_metrics)
     return trades_metrics, closed_df
 
-def create_open_df(positions, stock_prices, trade_gains_losses, percent_gains_losses):
+def create_open_df(positions, stock_prices, end_date):
     open_data = []
 
     for stock, data in positions.items():
         num_shares = sum(data['num_shares'])
         current_price = stock_prices[stock][-1]  # Get the current price
+        current_date = end_date[:10]
 
         for i in range(len(data['purchase_date'])):
             purchase_date = data['purchase_date'][i].date()
             purchase_price = data['purchase_price'][i]
 
             # Calculate trade gains and percent gains
-            trade_gains = current_price * num_shares - purchase_price * num_shares
+            trade_gains = current_price - purchase_price
             percent_gains = (current_price / purchase_price - 1) * 100
 
-            open_data.append([stock, purchase_price, purchase_date, current_price, trade_gains, percent_gains])
+            open_data.append([stock, purchase_price, purchase_date, current_price, current_date, trade_gains, percent_gains])
 
-    open_df = pd.DataFrame(open_data, columns=['stock', 'purchase_price', 'purchase_date', 'current_price', 'trade_gains', 'percent_gains'])
+    open_df = pd.DataFrame(open_data, columns=['stock', 'purchase_price', 'purchase_date', 'current_price', 'current_date', 'trade_gains', 'percent_gains'])
     return open_df
 
 #function to display final metrics
@@ -282,7 +283,7 @@ def backtest_strategy(stock_list):
     fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
 
     #create dataframe of open positions dict
-    open_df = create_open_df(positions, stock_prices, trade_gains_losses, percent_gains_losses)
+    open_df = create_open_df(positions, stock_prices, end_date)
 
     # calculate value of open positions
     open_positions_value =  calculate_open_positions_value(positions, stock_prices)

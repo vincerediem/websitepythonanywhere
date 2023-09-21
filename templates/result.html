@@ -101,36 +101,26 @@ Backtest Results
         <div class="card-body">
           <h2>Trade Specific Metrics:</h2>
           <div>{{ closed_df|safe }}</div>
+          <h3>Open Positions at the end of the period:</h3>
+          <div>{{ open_df|safe }}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div>
-    <div>
-      <div>
-        <div class="card mt-4">
-          <div class="card-body">
-            <h3>Open Positions at the end of the period:</h3>
-            <div>{{ open_df|safe }}</div>
-          </div>
-        </div>
-      </div>
+  <title>Final Metrics</title>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="overview has-text-centered">
+      <h1 class="title">Portfolio Overview</h1>
+      <p>Initial Balance: {{ final_metrics['initial_balance'] }}</p>
+      <p>Final Balance: {{ final_metrics['final_balance'] }}</p>
+      <p>Profit (absolute): {{ final_metrics['profit_absolute'] }}</p>
+      <p>Profit (%): {{ final_metrics['profit_percent'] }}</p>
     </div>
+  </div>
 
-    <title>Final Metrics</title>
-  </head>
-
-  <body>
-
-    <div class="container">
-      <div class="overview has-text-centered">
-        <h1 class="title">Portfolio Overview</h1>
-        <p>Initial Balance: {{ final_metrics['initial_balance'] }}</p>
-        <p>Final Balance: {{ final_metrics['final_balance'] }}</p>
-        <p>Profit (absolute): {{ final_metrics['profit_absolute'] }}</p>
-        <p>Profit (%): {{ final_metrics['profit_percent'] }}</p>
-      </div>
-    </div>
-
-    {% endblock %}
+  {% endblock %}

@@ -40,7 +40,7 @@ Backtest Results
   </div>
 
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-5">
       <div class="card">
         <div class="card-body">
           <h2>Other Metrics:</h2>
@@ -49,7 +49,7 @@ Backtest Results
               Portfolio Gains
               <span>$ {{ "%.2f"|format(final_metrics.profit_absolute) }} (<span class="text-success">{{ "%.2f"|format(final_metrics.profit_percent) }}%</span> portfolio increase)</span>
             </li>
-            <li class="list-group-item py-2">From an initial balance of ${{ final_metrics.initial_balance }} to a final balance of ${{ final_metrics.final_balance }}.</li>
+            <li class="list-group-item py-2">From an initial balance of ${{ final_metrics.initial_balance }} to a final balance of ${{ "%.2f"|format(final_metrics.final_balance) }}.</li>
             {% for key, value in final_metrics.items() %}
             {% if key.endswith('total_gains_losses') or key.endswith('ave_gains_losses') or key.endswith('num_of_trades') or key.endswith('final_share_price') %}
             <li class="list-group-item d-flex justify-content-between align-items-center py-2">
@@ -76,15 +76,79 @@ Backtest Results
       </div>
     </div>
 
-    <div class="col-lg-8">
+    <div class="col-lg-7">
       <div class="card">
         <div class="card-body">
-          <h2>Trade Specific Metrics:</h2>
+          <h2>Trade Log:</h2>
           <div>{{ closed_df|safe }}</div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<title>Final Metrics</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="overview has-text-centered">
+        <h1 class="title">Portfolio Overview</h1>
+        <p>Initial Balance: {{ final_metrics['initial_balance'] }}</p>
+        <p>Final Balance: {{ final_metrics['final_balance'] }}</p>
+        <p>Profit (absolute): {{ final_metrics['profit_absolute'] }}</p>
+        <p>Profit (%): {{ final_metrics['profit_percent'] }}</p>
+    </div>
+
+    <div class="stocks">
+        {% for stock in positions %}
+        <div class="box">
+            <h2 class="subtitle">{{ stock }}</h2>
+            <table class="table is-bordered is-striped is-narrow is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Open Shares Price</td>
+                        <td>{{ final_metrics[stock + '_open_shares_price'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Open Shares Value</td>
+                        <td>{{ final_metrics[stock + '_open_shares_value'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Open Shares</td>
+                        <td>{{ final_metrics[stock + '_num_open_shares'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Gains/Losses</td>
+                        <td>{{ final_metrics[stock + '_total_gains_losses'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Trades</td>
+                        <td>{{ final_metrics[stock + '_num_of_trades'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Average Gains/Losses</td>
+                        <td>{{ final_metrics[stock + '_ave_gains_losses'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Average Efficiency</td>
+                        <td>{{ final_metrics[stock + '_ave_efficiency'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Efficiency</td>
+                        <td>{{ final_metrics[stock + '_total_efficiency'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

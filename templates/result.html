@@ -18,7 +18,7 @@ Backtest Results
   </div>
 
   <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-4.5">
       <div class="card">
         <div class="card-body">
           <h2>Key Metrics</h2>
@@ -97,10 +97,11 @@ Backtest Results
     </div>
 
     <div class="col-lg-7">
-      <div class="card">
+      <div>
         <div class="card-body">
-          <h2>Trade Specific Metrics:</h2>
+          <h2>Trade Log:</h2>
           <div>{{ closed_df|safe }}</div>
+          <br>
           <h3>Open Positions at the end of the period:</h3>
           <div>{{ open_df|safe }}</div>
         </div>

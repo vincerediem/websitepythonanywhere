@@ -175,9 +175,8 @@ def create_open_df(positions, stock_prices, end_date, trade_set):
     open_data = []
 
     for stock, data in positions.items():
-        num_shares = sum(data['num_shares'])
-        current_price = stock_prices[stock][-1]  # Get the current price
-        current_date = end_date[:10]
+        last_price = stock_prices[stock][-1]  # Get the current price
+        last_date = end_date[:10]
 
         trade_num = 0
         for i in range(len(data['purchase_date'])):
@@ -185,15 +184,15 @@ def create_open_df(positions, stock_prices, end_date, trade_set):
             purchase_price = data['purchase_price'][i]
 
             # Calculate trade gains and percent gains
-            trade_gains = current_price - purchase_price
-            percent_gains = (current_price / purchase_price - 1) * 100
+            trade_gains = last_price - purchase_price
+            percent_gains = (last_price / purchase_price - 1) * 100
 
             trade_num += 1
             trade_id = f"{trade_set+1}.{trade_num}"
 
-            open_data.append([trade_id, stock, purchase_date, purchase_price, current_date, current_price, trade_gains, percent_gains])
+            open_data.append([trade_id, stock, purchase_date, purchase_price, last_date, last_price, trade_gains, percent_gains])
 
-    open_df = pd.DataFrame(open_data, columns=['trade_id', 'stock', 'purchase_date', 'purchase_price', 'current_date', 'current_price', 'trade_gains', 'percent_gains'])
+    open_df = pd.DataFrame(open_data, columns=['trade_id', 'stock', 'purchase_date', 'purchase_price', 'last_date', 'last_price', 'trade_gains', 'percent_gains'])
     return open_df
 
 #function to display final metrics

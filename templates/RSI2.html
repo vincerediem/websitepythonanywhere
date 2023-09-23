@@ -1,22 +1,149 @@
 {% extends "base.html" %} {% block title %}RSI2{% endblock %}
-{% block content %} <h1> This is the RSI Strategy page!</h1>
-<form method="POST">
-  <h3 allign="center">Enter Symbol</h3>
-  <div class="form-group">
-    <label for="stock">Stock</label>
-    <input
-      type="stock"
-      class="form-control"
-      id="stock"
-      name="stock"
-      placeholder="Enter stock" />
-  </div>
-  <br />
-  <button type="submit" class="btn-primary">Submit</button>
-</form>
+{% block content %} <h1>RSI-Based Trading Strategy</h1>
 
-<br><br>
-<h2> OR</h2>
-<br><br>
+<head>
+  <title>RSI-Based Trading Strategy</title>
+  <style>
+        /* CSS styles (unchanged) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .form-box {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-right: 20px;
+            float: left;
+        }
+
+        .form-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button.btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="form-box">
+      <form method="POST">
+        <h3 align="center">Enter Symbol</h3>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="stock"
+            class="form-control"
+            id="stock"
+            name="stock"
+            placeholder="Enter stock" />
+        </div>
+        <br />
+        <button type="submit" class="btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <h1>RSI-Based Trading Strategy</h1>
+    <p>In this trading strategy, we utilize the Relative Strength Index (RSI)
+      indicator to make automated decisions when buying and selling stocks. The
+      RSI helps us identify potential market trends and make informed trading
+      choices.</p>
+    <h2>Assumptions</h2>
+    <ul>
+      <li><strong>Time Frame:</strong> The algorithm backtests its strategy
+        using historical data from the past year.</li>
+      <li><strong>Initial Account Balance:</strong> The algorithm starts with an
+        initial account balance of $100,000.</li>
+      <li><strong>RSI Calculation Period:</strong> The RSI indicator is
+        calculated using a period of 14 days.</li>
+      <li><strong>Market Close:</strong> All shares are bought using the closing
+        price of the stock.</li>
+      <p> <i>*To change these assumptions, scroll to the bottom and go to RSI
+          Strategy with custom parameters.</i></p>
+    </ul>
+    <h2>Buying Shares (RSI Below 30 - Oversold)</h2>
+    <ul>
+      <li><strong>RSI Below 30:</strong> When the RSI of a stock falls below the
+        threshold of 30, it's considered "oversold," indicating the stock's
+        price has significantly decreased.</li>
+      <li><strong>Buy Signal:</strong> The algorithm generates a "buy signal"
+        when this condition is met, suggesting it's a good time to buy the
+        stock.</li>
+      <li><strong>Execution:</strong> Once the RSI hits 30, the algorithm buys a
+        share every day as long as the RSI remains under 30.</li>
+    </ul>
+    <h2>Selling Shares (RSI Above 65 - Overbought)</h2>
+    <ul>
+      <li><strong>RSI Above 65:</strong> When the RSI of a stock rises above the
+        threshold of 65, it's considered "overbought," indicating the stock's
+        price has significantly increased.</li>
+      <li><strong>Sell Signal:</strong> The algorithm generates a "sell signal"
+        when this condition is met, suggesting it's a good time to sell the
+        stock.</li>
+      <li><strong>Execution:</strong> When the RSI hits 65, the algorithm sells
+        all open shares of the stock.</li>
+    </ul>
+    <p>The key advantage of this strategy is automation, which can save time and
+      reduce emotional biases. However, it's important to remember that no
+      trading strategy is risk-free. Proper risk management and diversification
+      are essential for successful trading.</p>
+  </div>
+
+  <br clear="left">
+
+  <a class="btn btn-primary" href="/RSI2_complex" role="button">Go to RSI
+    Strategy with custom
+    parameters</a>
+</body>
 
 {% endblock %}

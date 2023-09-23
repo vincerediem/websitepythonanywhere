@@ -40,14 +40,16 @@ def RSI2_complex():
     if request.method == 'POST':
         stock_list = request.form.get('stock')
         stock_list = stock_list.split()
-        
+
         rsi_period = int(request.form['rsi_period'])
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         initial_balance = float(request.form['initial_balance'])
+        buy_rsi = request.form['buy_rsi']
+        sell_rsi = request.form['sell_rsi']
 
         # Call the backtest_strategy function with form data
-        final_balance, _, _, positions, _, _, closed_df, open_df, _, fig, _, final_metrics = rsi2_complex.backtest_strategy(stock_list, rsi_period, start_date, end_date, initial_balance)
+        final_balance, _, _, positions, _, _, closed_df, open_df, _, fig, _, final_metrics = rsi2_complex.backtest_strategy(stock_list, rsi_period, start_date, end_date, initial_balance, buy_rsi, sell_rsi)
 
         # Convert Plotly "fig" to HTML
         plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')

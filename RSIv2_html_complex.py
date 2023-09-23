@@ -15,7 +15,7 @@ BASE_URL = 'https://paper-api.alpaca.markets'
 
 api = tradeapi.REST(API_KEY, SECRET_KEY, base_url=BASE_URL, api_version='v2')
 
-def plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date):
+def plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date, buy_rsi, sell_rsi):
     close_prices = historical_data['close']
     date_range = historical_data.index
 
@@ -29,8 +29,8 @@ def plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices,
     fig.add_trace(go.Scatter(x=date_range, y=rsi_values, mode='lines', name='RSI'), row=2, col=1)
 
     # RSI 35 and 70 lines
-    fig.add_trace(go.Scatter(x=date_range, y=[30]*len(rsi_values), mode='lines', name='RSI 35', line=dict(color='green', width=1)), row=2, col=1)
-    fig.add_trace(go.Scatter(x=date_range, y=[65]*len(rsi_values), mode='lines', name='RSI 70', line=dict(color='red', width=1)), row=2, col=1)
+    fig.add_trace(go.Scatter(x=date_range, y=[buy_rsi]*len(rsi_values), mode='lines', name='RSI 35', line=dict(color='green', width=1)), row=2, col=1)
+    fig.add_trace(go.Scatter(x=date_range, y=[sell_rsi]*len(rsi_values), mode='lines', name='RSI 70', line=dict(color='red', width=1)), row=2, col=1)
 
     # Buy dates and prices
     for stock, dates in buy_dates.items():
@@ -75,19 +75,19 @@ def set_timeframe(start_date_str, end_date_str):
     return start_date, end_date
 
 #buy condition as function
-def buy_condition(row):
+def buy_condition(row, buy_rsi):
     buy_condition_met = False
 
-    if row['rsi'] < 30:
+    if row['rsi'] < buy_rsi:
         buy_condition_met = True
 
     return buy_condition_met
 
 #sell condition
-def sell_condition(stock, positions, row):
+def sell_condition(stock, positions, row, sell_rsi):
     sell_condition_met = False
 
-    if stock in positions and row['rsi'] > 65:
+    if stock in positions and row['rsi'] > sell_rsi:
         sell_condition_met = True
     
     return sell_condition_met
@@ -284,7 +284,7 @@ def rsi(data, rsi_period):
     rs = avg_gain / avg_loss
     return 100 - (100 / (1 + rs))
 
-def backtest_strategy(stock_list, rsi_period, start_date_str, end_date_str, inital_balance):
+def backtest_strategy(stock_list, rsi_period, start_date_str, end_date_str, inital_balance, buy_rsi, sell_rsi):
 
     start_date, end_date = set_timeframe(start_date_str, end_date_str)
 
@@ -315,11 +315,11 @@ def backtest_strategy(stock_list, rsi_period, start_date_str, end_date_str, init
             if pd.isna(row['rsi']):
                 continue
             #buy and sell conditions
-            if buy_condition(row):
+            if buy_condition(row, buy_rsi):
                 cash = buy_stock(stock, num_shares, row, positions, cash,  index)
                 buy_dates[stock].append(pd.to_datetime(index))
                 buy_prices[stock].append(row['close'])
-            elif sell_condition(stock, positions, row):
+            elif sell_condition(stock, positions, row, sell_rsi):
                 trade_set += 1
                 cash = sell_stock(stock, row, positions, cash, trade_gains_losses, positions_sold, index, percent_gains_losses, trade_set)
                 sell_dates[stock].append(pd.to_datetime(index))
@@ -328,7 +328,7 @@ def backtest_strategy(stock_list, rsi_period, start_date_str, end_date_str, init
             rsi_values[stock].append(row['rsi'])
 
     #plots displayed on site
-    fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
+    fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date, buy_rsi, sell_rsi)
 
     #creates dict with opensum info
     open_summs =  calculate_open_positions_value(positions, stock_prices)

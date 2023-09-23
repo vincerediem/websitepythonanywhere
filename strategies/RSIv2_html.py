@@ -214,6 +214,14 @@ def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summ
     final_metrics['stdvar_%_gain'] = closed_df['percent_gain'].std()
     final_metrics['closed_trade_count'] = closed_df['trade_gains'].count()
 
+    if not open_df.empty:
+        open_df['last_date'] = pd.to_datetime(open_df['last_date'])
+        open_df['purchase_date'] = pd.to_datetime(open_df['purchase_date'])
+        avg_holding_period = (open_df['last_date'] - open_df['purchase_date']).mean().days
+    else:
+        avg_holding_period = 0
+    final_metrics['average_holding_period'] = avg_holding_period
+
 
     # open positions
     final_metrics['open_shares_price'] = open_summs['Current price']
@@ -221,50 +229,6 @@ def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summ
     final_metrics['value_of_open_shares'] = open_summs['Total value']
 
     return final_metrics    
-
-#function to display final metrics
-def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df):
-    final_metrics = {}
-
-    # Open Metrics
-    for stock in positions:
-        for i, price in enumerate(positions[stock]['purchase_price']):
-            final_metrics[f"{stock}_open_shares_price"] = stock_prices[stock][-1]  # Use current price for open positions
-
-    # Include final value of any open positions
-    for stock, data in positions.items():
-        num_shares = sum(data['num_shares'])
-        current_price = stock_prices[stock][-1]
-        final_metrics[f"{stock}_open_shares_value"] = num_shares * current_price
-        final_metrics[f"{stock}_num_open_shares"] = num_shares
-
-    # Closed Metrics
-    # Total gains/losses
-    for stock in trade_gains_losses:
-        final_metrics[f"{stock}_total_gains_losses"] = sum(trade_gains_losses[stock])
-        final_metrics[f'{stock}_num_of_complete_trades'] = len(trade_gains_losses[stock])
-        final_metrics[f"{stock}_ave_gains_losses"] = final_metrics[f"{stock}_total_gains_losses"] / final_metrics[f'{stock}_num_of_complete_trades']
-
-    for stock, gains in percent_gains_losses.items():
-        final_metrics[f'{stock}_ave_efficiency'] = sum(gains) / len(gains)
-        final_metrics[f'{stock}_total_efficiency'] = sum(gains)
-
-    # Portfolio change metrics
-    final_metrics['initial_balance'] = initial_balance
-    final_metrics['final_balance'] = final_balance
-    final_metrics['profit_percent'] = ((final_balance - initial_balance) / initial_balance) * 100
-    final_metrics['profit_absolute'] = final_balance - initial_balance
-
-    # Average Holding Period for Open Positions
-    if not open_df.empty:
-        open_df['last_date'] = pd.to_datetime(open_df['last_date'])
-        open_df['purchase_date'] = pd.to_datetime(open_df['purchase_date'])
-        avg_holding_period = (open_df['last_date'] - open_df['purchase_date']).mean().days
-    else:
-        avg_holding_period = 0
-    final_metrics['Average Holding Period for Open Positions'] = avg_holding_period
-
-    return final_metrics
 
 def rsi(data, periods=14):
     delta = data.diff()

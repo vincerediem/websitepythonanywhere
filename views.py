@@ -21,7 +21,7 @@ def RSI2_result(stock_list):
     stock_list = stock_list.split(',')
 
     #intial backtest
-    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, simple_metrics = rsi2.backtest_strategy(stock_list)
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, final_metrics = rsi2.backtest_strategy(stock_list)
 
     #converts plotly "fig" to html
     plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
@@ -29,7 +29,7 @@ def RSI2_result(stock_list):
     return render_template("result.html", 
                            stock_list=stock_list, 
                            positions=positions, 
-                           simple_metrics=simple_metrics,
+                           final_metrics=final_metrics,
                            closed_df=closed_df.to_html(),
                            open_df=open_df.to_html(),
                            plot_html=plot_html)

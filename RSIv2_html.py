@@ -331,10 +331,10 @@ def backtest_strategy(stock_list):
 
     final_balance = cash + open_summs['Total value']
 
-    simple_metrics = better_metrics(initial_balance, final_balance, closed_df, open_df, open_summs)
+    final_metrics = better_metrics(initial_balance, final_balance, closed_df, open_df, open_summs)
 
-    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, simple_metrics
+    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, final_metrics
 
 if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")
-    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, simple_metrics = backtest_strategy(stock_list(stocks))
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, final_metrics = backtest_strategy(stock_list(stocks))

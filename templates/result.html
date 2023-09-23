@@ -23,13 +23,13 @@ Backtest Results
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
               <span style="margin-right: 1rem;">Portfolio Change:</span>
-              {% if simple_metrics['portfolio_change_$'] >= 0 %}
+              {% if final_metrics['portfolio_change_$'] >= 0 %}
               <span class="badge badge-pill bg-success text-white"
-                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['portfolio_change_$'])
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['portfolio_change_$'])
                 }}$</span>
               {% else %}
               <span class="badge badge-pill bg-danger text-white"
-                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['portfolio_change_$'])
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['portfolio_change_$'])
                 }}$</span>
               {% endif %}
             </li>
@@ -37,14 +37,14 @@ Backtest Results
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
               <span style="margin-right: 1rem;">Initial Balance:</span>
               <span
-                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['initial_balance'])
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['initial_balance'])
                 }}$</span>
             </li>
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
               <span style="margin-right: 1rem;">Fianal Balnce:</span>
               <span
-                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['final_balance'])
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['final_balance'])
                 }}$</span>
             </li>
           </ul>
@@ -63,32 +63,32 @@ Backtest Results
               <table>
                 <tr>
                   <td>Total $ Gain</td>
-                  <td>${{ "%.2f"|format(simple_metrics['total_$_gain']) }}</td>
+                  <td>${{ "%.2f"|format(final_metrics['total_$_gain']) }}</td>
                 </tr>
                 <tr>
                   <td>Mean $ Gain</td>
-                  <td>${{ "%.2f"|format(simple_metrics['mean_$_gain']) }}</td>
+                  <td>${{ "%.2f"|format(final_metrics['mean_$_gain']) }}</td>
                 </tr>
                 <tr>
                   <td>Total % Gain on Invested</td>
-                  <td>{{ "%.2f"|format(simple_metrics['total_%_gain_of_invested'])
+                  <td>{{ "%.2f"|format(final_metrics['total_%_gain_of_invested'])
                     }}%</td>
                 </tr>
                 <tr>
                   <td>Mean % Gain</td>
-                  <td>{{ "%.2f"|format(simple_metrics['ave_%_gain']) }}%</td>
+                  <td>{{ "%.2f"|format(final_metrics['ave_%_gain']) }}%</td>
                 </tr>
                 <tr>
                   <td>Variance of % Gain</td>
-                  <td>{{ "%.2f"|format(simple_metrics['var_%_gain']) }}</td>
+                  <td>{{ "%.2f"|format(final_metrics['var_%_gain']) }}</td>
                 </tr>
                 <tr>
                   <td>Standard Deviation of % Gain</td>
-                  <td>{{ "%.2f"|format(simple_metrics['stdvar_%_gain']) }}</td>
+                  <td>{{ "%.2f"|format(final_metrics['stdvar_%_gain']) }}</td>
                 </tr>
                 <tr>
                   <td>Closed Trade Count</td>
-                  <td>{{ simple_metrics['closed_trade_count'] }}</td>
+                  <td>{{ final_metrics['closed_trade_count'] }}</td>
                 </tr>
               </table>
               <br>
@@ -100,15 +100,15 @@ Backtest Results
                 </thead>
                 <table>
                   <td>Open Shares Price</td>
-                  <td>${{ "%.2f"|format(simple_metrics['open_shares_price']) }}</td>
+                  <td>${{ "%.2f"|format(final_metrics['open_shares_price']) }}</td>
                 </tr>
                 <tr>
                   <td>Number of Open Shares</td>
-                  <td>{{ simple_metrics['#_of_open_shares'] }}</td>
+                  <td>{{ final_metrics['#_of_open_shares'] }}</td>
                 </tr>
                 <tr>
                   <td>Value of Open Shares</td>
-                  <td>${{ "%.2f"|format(simple_metrics['value_of_open_shares'])
+                  <td>${{ "%.2f"|format(final_metrics['value_of_open_shares'])
                     }}</td>
                 </tr>
               </table>

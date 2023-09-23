@@ -1,75 +1,184 @@
-{% extends "base.html" %} {% block title %}RSI2_complex{% endblock %}
-{% block content %} <h1> This is the RSI Strategy page!</h1>
-<form method="POST">
-    <h3 align="center">Enter Curstom RSI parameters</h3>
-    <div class="form-group">
-        <label for="stock">Stock</label>
-        <input
-            type="stock"
-            class="form-control"
-            id="stock"
-            name="stock"
-            placeholder="Enter stock" />
-        <label for="stock">RSI period</label>
-        <input
-            type="number"
-            class="form-control"
-            id="rsi_period"
-            name="rsi_period"
-            placeholder="Enter RSI period"
-            min="1"
-            max="100"
-            step="1" />
-        <label for="buy_rsi">Buy RSI:</label>
-        <input
-            type="number"
-            class="form-control"
-            id="buy_rsi"
-            name="buy_rsi"
-            placeholder="Enter Buy RSI"
-            min="1"
-            max="100"
-            step="1" />
-        <label for="sell_rsi">Sell RSI:</label>
-        <input
-            type="number"
-            class="form-control"
-            id="sell_rsi"
-            name="sell_rsi"
-            placeholder="Enter Sell RSI"
-            min="1"
-            max="100"
-            step="1" />
-        <label for="start_date">Start Date (YYYY-MM-DD):</label>
-        <input
-            type="text"
-            class="form-control"
-            id="start_date"
-            name="start_date"
-            placeholder="YYYY-MM-DD"
-            pattern="\d{4}-\d{2}-\d{2}"
-            required />
+{% extends "base.html" %}
+{% block title %}RSI2_complex{% endblock %}
+{% block content %}
+<title>RSI-Based Trading Strategy</title>
+<style>
+        /* CSS styles (unchanged) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-        <label for="end_date">End Date (YYYY-MM-DD):</label>
-        <input
-            type="text"
-            class="form-control"
-            id="end_date"
-            name="end_date"
-            placeholder="YYYY-MM-DD"
-            pattern="\d{4}-\d{2}-\d{2}"
-            required />
-        <label for="initial_balance">Initial Account Balance:</label>
-        <input
-            type="number"
-            class="form-control"
-            id="initial_balance"
-            name="initial_balance"
-            placeholder="Enter initial balance"
-            min="0"
-            step="1" />
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .form-box {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-right: 20px;
+            float: left;
+        }
+
+        .form-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button.btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+<div class="container">
+    <div class="form-box">
+        <form method="POST">
+            <div class="form-group">
+                <div class="left-section">
+                    <label for="stock">Stock Symbol:</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="stock"
+                        name="stock"
+                        placeholder="Enter stock symbol"
+                        style="width: 350px;" />
+
+                    <label for="rsi_period">RSI Period (e.g., 14):</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="rsi_period"
+                        name="rsi_period"
+                        placeholder="Enter RSI period (default: 14)"
+                        min="1"
+                        max="100"
+                        step="1" />
+
+                    <label for="buy_rsi">Buy RSI Threshold:</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="buy_rsi"
+                        name="buy_rsi"
+                        placeholder="Enter Buy RSI threshold (e.g., 30)"
+                        min="1"
+                        max="100"
+                        step="1" />
+
+                    <label for="sell_rsi">Sell RSI Threshold:</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="sell_rsi"
+                        name="sell_rsi"
+                        placeholder="Enter Sell RSI threshold (e.g., 70)"
+                        min="1"
+                        max="100"
+                        step="1" />
+                </div>
+                <div class="right-section">
+                    <label for="start_date">Start Date (YYYY-MM-DD):</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="start_date"
+                        name="start_date"
+                        placeholder="Enter start date (e.g., 2023-01-01)"
+                        pattern="\d{4}-\d{2}-\d{2}"
+                        required />
+
+                    <label for="end_date">End Date (YYYY-MM-DD):</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="end_date"
+                        name="end_date"
+                        placeholder="Enter end date (e.g., 2023-12-31)"
+                        pattern="\d{4}-\d{2}-\d{2}"
+                        required />
+
+                    <label for="initial_balance">Initial Account Balance:</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="initial_balance"
+                        name="initial_balance"
+                        placeholder="Enter initial balance (default: $100,000)"
+                        min="0"
+                        step="1" />
+                </div>
+            </div>
+            <br />
+            <button type="submit" class="btn-primary">Submit</button>
+        </form>
     </div>
-    <br />
-    <button type="submit" class="btn-primary">Submit</button>
-</form>
+
+    <h1>RSI-Based Trading Strategy</h1>
+    <div class="description">
+        <p>Customize your RSI trading strategy by entering the parameters below:</p>
+        <ul>
+            <li><strong>Stock Symbol:</strong> Enter the symbol of the stock you
+                want to trade.</li>
+            <li><strong>RSI Period (Default: 14):</strong> Set the period for
+                calculating the Relative Strength Index (RSI).</li>
+            <li><strong>Buy RSI Threshold:</strong> Specify the RSI threshold
+                for triggering buy signals (e.g., 30).</li>
+            <li><strong>Sell RSI Threshold:</strong> Specify the RSI threshold
+                for triggering sell signals (e.g., 70).</li>
+            <li><strong>Start Date:</strong> Enter the start date for
+                backtesting your strategy in YYYY-MM-DD format.</li>
+            <li><strong>End Date:</strong> Enter the end date for backtesting
+                your strategy in YYYY-MM-DD format.</li>
+            <li><strong>Initial Account Balance (Default: $100,000):</strong>
+                Set your initial account balance for trading.</li>
+        </ul>
+        <p>Once you've customized the parameters and submitted the form, the
+            algorithm will run with your chosen settings. Remember that trading
+            involves risks, and your strategy's performance may vary based on
+            your inputs.</p>
+    </div>
+</div>
 {% endblock %}

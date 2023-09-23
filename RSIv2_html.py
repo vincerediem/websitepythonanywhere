@@ -50,8 +50,6 @@ def plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices,
     fig.update_layout(height=600, width=800, title_text='Stock Prices and RSI')
     return fig
 
-
-
 def stock_list(input_str):
     # Split the string and convert each value to integer, creating an array
     stock_list = input_str.split()
@@ -153,12 +151,12 @@ def calculate_open_positions_value(positions, stock_prices):
     return total_open_positions_value
 
 #makes trades a list of dicts per trade, and creates a dataframe
-def trade_metrics(stock, positions_sold):
+def create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, trade_set):
     trades_metrics = []
-    if positions_sold.get(stock) is not None:  # Only proceed if the stock exists in positions_sold
+    if positions_sold.get(stock) is not None:
         for i, _ in enumerate(positions_sold[stock]['purchase_price']):
             trade = {
-                'trade_id': f"{positions_sold[stock]['trade_set'][i]}.{positions_sold[stock]['trade_count'][i]}", #trade set and number of trade
+                'trade_id': f"{positions_sold[stock]['trade_set'][i]}.{positions_sold[stock]['trade_count'][i]}",
                 'stock': stock.capitalize(),
                 'purchase_date': positions_sold[stock]['purchase_date'][i].date(),
                 'purchase_price': positions_sold[stock]['purchase_price'][i],
@@ -169,31 +167,23 @@ def trade_metrics(stock, positions_sold):
             }
             trades_metrics.append(trade)
     closed_df = pd.DataFrame(trades_metrics)
-    return trades_metrics, closed_df
-
-def create_open_df(positions, stock_prices, end_date, trade_set):
+    
     open_data = []
-
     for stock, data in positions.items():
-        last_price = stock_prices[stock][-1]  # Get the current price
+        last_price = stock_prices[stock][-1]
         last_date = end_date[:10]
-
         trade_num = 0
         for i in range(len(data['purchase_date'])):
             purchase_date = data['purchase_date'][i].date()
             purchase_price = data['purchase_price'][i]
-
-            # Calculate trade gains and percent gains
             trade_gains = last_price - purchase_price
             percent_gains = (last_price / purchase_price - 1) * 100
-
             trade_num += 1
             trade_id = f"{trade_set+1}.{trade_num}"
-
             open_data.append([trade_id, stock, purchase_date, purchase_price, last_date, last_price, trade_gains, percent_gains])
-
     open_df = pd.DataFrame(open_data, columns=['trade_id', 'stock', 'purchase_date', 'purchase_price', 'last_date', 'last_price', 'trade_gains', 'percent_gains'])
-    return open_df
+    
+    return closed_df, open_df
 
 #function to display final metrics
 def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df):
@@ -297,18 +287,17 @@ def backtest_strategy(stock_list):
     fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
 
     #create dataframe of open positions dict
-    open_df = create_open_df(positions, stock_prices, end_date, trade_set)
+    closed_df, open_df = create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, trade_set)
 
     # calculate value of open positions
     open_positions_value =  calculate_open_positions_value(positions, stock_prices)
 
     final_balance = cash + open_positions_value
 
-    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices
+    return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices
 
 
 if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")
-    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices = backtest_strategy(stock_list(stocks))
-    trades_metrics, closed_df = trade_metrics(stock, positions_sold)
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices = backtest_strategy(stock_list(stocks))
     final_metrics_data = final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df)

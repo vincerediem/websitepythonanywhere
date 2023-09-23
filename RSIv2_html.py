@@ -338,4 +338,3 @@ def backtest_strategy(stock_list):
 if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")
     final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, simple_metrics = backtest_strategy(stock_list(stocks))
-    final_metrics_data = final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df)

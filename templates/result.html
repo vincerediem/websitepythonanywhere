@@ -7,7 +7,7 @@ Backtest Results
   <h1 class="my-4">Backtesting Results for {{stock_list}}:</h1>
 
   <div class="row my-4">
-    <div class="col-lg-12">
+    <div class="col-lg-9">
       <div class="card">
         <div class="card-body">
           <h2>Graph</h2>
@@ -15,97 +15,119 @@ Backtest Results
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-4.5">
+    <div class="col-lg-3">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body px-3">
           <h2>Key Metrics</h2>
           <ul class="list-group list-group-flush">
-            {% for key, value in final_metrics.items() %}
-            {% if key.endswith('ave_efficiency') %}
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
-              <span style="margin-right: 1rem;">Average % Gain per trade:</span>
-              <span
-                class="badge badge-primary badge-pill bg-success text-white"
-                style="font-size: 1.1rem;">{{
-                "%.2f"|format(value*100) }}%</span>
+              <span style="margin-right: 1rem;">Portfolio Change:</span>
+              {% if simple_metrics['portfolio_change_$'] >= 0 %}
+              <span class="badge badge-pill bg-success text-white"
+                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['portfolio_change_$'])
+                }}$</span>
+              {% else %}
+              <span class="badge badge-pill bg-danger text-white"
+                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['portfolio_change_$'])
+                }}$</span>
+              {% endif %}
             </li>
-            {% elif key.endswith('total_efficiency') %}
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
-              <span style="margin-right: 1rem;">Total % Gain for all trades:</span>
+              <span style="margin-right: 1rem;">Initial Balance:</span>
               <span
-                class="badge badge-primary badge-pill bg-success text-white"
-                style="font-size: 1.1rem;">{{
-                "%.2f"|format(value*100) }}%</span>
+                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['initial_balance'])
+                }}$</span>
             </li>
-            {% endif %}
-            {% endfor %}
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
+              <span style="margin-right: 1rem;">Fianal Balnce:</span>
+              <span
+                style="font-size: 1.1rem;">{{ "%.2f"|format(simple_metrics['final_balance'])
+                }}$</span>
+            </li>
           </ul>
         </div>
       </div>
-
-      {% for stock in positions %}
-      <div class="box">
-        <table class="table is-bordered is-striped is-narrow is-hoverable">
-          <thead>
-            <tr>
-              <th>CLOSED POSITIONS -- METRICS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Open Shares Price</td>
-              <td>{{ final_metrics[stock + '_open_shares_price'] }}</td>
-            </tr>
-            <tr>
-              <td>Open Shares Value</td>
-              <td>{{ final_metrics[stock + '_open_shares_value'] }}</td>
-            </tr>
-            <tr>
-              <td>Number of Open Shares</td>
-              <td>{{ final_metrics[stock + '_num_open_shares'] }}</td>
-            </tr>
-            <tr>
-              <td>Total Gains/Losses</td>
-              <td>{{ final_metrics[stock + '_total_gains_losses'] }}</td>
-            </tr>
-            <tr>
-              <td>Number of Complete Trades</td>
-              <td>{{ final_metrics[stock + '_num_of_complete_trades'] }}</td>
-            </tr>
-            <tr>
-              <td>Average Gains/Losses</td>
-              <td>{{ final_metrics[stock + '_ave_gains_losses'] }}</td>
-            </tr>
-            <tr>
-              <td>Average Percent Gain</td>
-              <td>{{ final_metrics[stock + '_ave_efficiency'] }}</td>
-            </tr>
-            <tr>
-              <td>Total Efficiency</td>
-              <td>{{ final_metrics[stock + '_total_efficiency'] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endfor %}
     </div>
 
-    <div class="col-lg-7">
-      <div>
-        <div class="card-body">
-          <h2>Trade Log:</h2>
-          <div>{{ closed_df|safe }}</div>
-          <br>
-          <h3>Open Positions at the end of the period:</h3>
-          <div>{{ open_df|safe }}</div>
+    <body>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="box">
+            <table class="table is-bordered is-striped is-narrow is-hoverable">
+              <thead>
+                <th>CLOSED POSITIONS METRICS</th>
+              </thead>
+              <table>
+                <tr>
+                  <td>Total $ Gain</td>
+                  <td>${{ "%.2f"|format(simple_metrics['total_$_gain']) }}</td>
+                </tr>
+                <tr>
+                  <td>Mean $ Gain</td>
+                  <td>${{ "%.2f"|format(simple_metrics['mean_$_gain']) }}</td>
+                </tr>
+                <tr>
+                  <td>Total % Gain on Invested</td>
+                  <td>{{ "%.2f"|format(simple_metrics['total_%_gain_of_invested'])
+                    }}%</td>
+                </tr>
+                <tr>
+                  <td>Mean % Gain</td>
+                  <td>{{ "%.2f"|format(simple_metrics['ave_%_gain']) }}%</td>
+                </tr>
+                <tr>
+                  <td>Variance of % Gain</td>
+                  <td>{{ "%.2f"|format(simple_metrics['var_%_gain']) }}</td>
+                </tr>
+                <tr>
+                  <td>Standard Deviation of % Gain</td>
+                  <td>{{ "%.2f"|format(simple_metrics['stdvar_%_gain']) }}</td>
+                </tr>
+                <tr>
+                  <td>Closed Trade Count</td>
+                  <td>{{ simple_metrics['closed_trade_count'] }}</td>
+                </tr>
+              </table>
+              <br>
+              <table class="table is-bordered is-striped is-narrow is-hoverable">
+                <thead>
+                  <tr>
+                    <th>OPEN POSITIONS METRICS </th>
+                  </tr>
+                </thead>
+                <table>
+                  <td>Open Shares Price</td>
+                  <td>${{ "%.2f"|format(simple_metrics['open_shares_price']) }}</td>
+                </tr>
+                <tr>
+                  <td>Number of Open Shares</td>
+                  <td>{{ simple_metrics['#_of_open_shares'] }}</td>
+                </tr>
+                <tr>
+                  <td>Value of Open Shares</td>
+                  <td>${{ "%.2f"|format(simple_metrics['value_of_open_shares'])
+                    }}</td>
+                </tr>
+              </table>
+            </table>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div>
+          <div class="card-body">
+            <h2>Trade Log:</h2>
+            <div>{{ closed_df|safe }}</div>
+            <br>
+            <h3>Open Positions at the end of the period:</h3>
+            <div>{{ open_df|safe }}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  {% endblock %}
+    {% endblock %}

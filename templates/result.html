@@ -53,8 +53,7 @@ Backtest Results
         <table class="table is-bordered is-striped is-narrow is-hoverable">
           <thead>
             <tr>
-              <th>Metric</th>
-              <th>Value</th>
+              <th>CLOSED POSITIONS -- METRICS</th>
             </tr>
           </thead>
           <tbody>
@@ -75,15 +74,15 @@ Backtest Results
               <td>{{ final_metrics[stock + '_total_gains_losses'] }}</td>
             </tr>
             <tr>
-              <td>Number of Trades</td>
-              <td>{{ final_metrics[stock + '_num_of_trades'] }}</td>
+              <td>Number of Complete Trades</td>
+              <td>{{ final_metrics[stock + '_num_of_complete_trades'] }}</td>
             </tr>
             <tr>
               <td>Average Gains/Losses</td>
               <td>{{ final_metrics[stock + '_ave_gains_losses'] }}</td>
             </tr>
             <tr>
-              <td>Average Efficiency</td>
+              <td>Average Percent Gain</td>
               <td>{{ final_metrics[stock + '_ave_efficiency'] }}</td>
             </tr>
             <tr>

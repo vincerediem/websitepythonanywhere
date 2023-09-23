@@ -213,8 +213,8 @@ def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_
     # Total gains/losses
     for stock in trade_gains_losses:
         final_metrics[f"{stock}_total_gains_losses"] = sum(trade_gains_losses[stock])
-        final_metrics[f'{stock}_num_of_trades'] = len(trade_gains_losses[stock])
-        final_metrics[f"{stock}_ave_gains_losses"] = final_metrics[f"{stock}_total_gains_losses"] / final_metrics[f'{stock}_num_of_trades']
+        final_metrics[f'{stock}_num_of_complete_trades'] = len(trade_gains_losses[stock])
+        final_metrics[f"{stock}_ave_gains_losses"] = final_metrics[f"{stock}_total_gains_losses"] / final_metrics[f'{stock}_num_of_complete_trades']
 
     for stock, gains in percent_gains_losses.items():
         final_metrics[f'{stock}_ave_efficiency'] = sum(gains) / len(gains)

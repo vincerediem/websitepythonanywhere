@@ -196,9 +196,10 @@ def create_open_df(positions, stock_prices, end_date, trade_set):
     return open_df
 
 #function to display final metrics
-def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices):
+def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df):
     final_metrics = {}
 
+    # Open Metrics
     for stock in positions:
         for i, price in enumerate(positions[stock]['purchase_price']):
             final_metrics[f"{stock}_open_shares_price"] = stock_prices[stock][-1]  # Use current price for open positions
@@ -210,6 +211,7 @@ def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_
         final_metrics[f"{stock}_open_shares_value"] = num_shares * current_price
         final_metrics[f"{stock}_num_open_shares"] = num_shares
 
+    # Closed Metrics
     # Total gains/losses
     for stock in trade_gains_losses:
         final_metrics[f"{stock}_total_gains_losses"] = sum(trade_gains_losses[stock])
@@ -225,8 +227,38 @@ def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_
     final_metrics['final_balance'] = final_balance
     final_metrics['profit_percent'] = ((final_balance - initial_balance) / initial_balance) * 100
     final_metrics['profit_absolute'] = final_balance - initial_balance
-    return final_metrics
 
+    # Additional Metrics
+    # Total number of trades
+    total_trades = closed_df.shape[0] if 'trade_id' in closed_df.columns else 0
+    final_metrics['Total Trades'] = total_trades
+
+    # Average Profit per Trade
+    average_profit_per_trade = closed_df['trade_gains'].mean() if 'trade_gains' in closed_df.columns else 0
+    final_metrics['Average Profit per Trade'] = average_profit_per_trade
+
+    # Maximum Drawdown
+    max_drawdown = (initial_balance - final_balance) / initial_balance * 100
+    final_metrics['Maximum Drawdown'] = max_drawdown
+
+    # Win Rate
+    if total_trades > 0:
+        win_trades = len(closed_df[closed_df['trade_gains'] > 0])
+        win_rate = (win_trades / total_trades) * 100
+    else:
+        win_rate = 0
+    final_metrics['Win Rate'] = win_rate
+
+    # Average Holding Period for Open Positions
+    if not open_df.empty:
+        open_df['last_date'] = pd.to_datetime(open_df['last_date'])
+        open_df['purchase_date'] = pd.to_datetime(open_df['purchase_date'])
+        avg_holding_period = (open_df['last_date'] - open_df['purchase_date']).mean().days
+    else:
+        avg_holding_period = 0
+    final_metrics['Average Holding Period for Open Positions'] = avg_holding_period
+
+    return final_metrics
 
 def rsi(data, periods=14):
     delta = data.diff()
@@ -300,5 +332,4 @@ if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")
     final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices = backtest_strategy(stock_list(stocks))
     trades_metrics, closed_df = trade_metrics(stock, positions_sold)
-    final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices)
-    print(final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices))
+    final_metrics_data = final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df)

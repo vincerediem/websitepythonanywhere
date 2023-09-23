@@ -24,8 +24,9 @@ def RSI2_result(stock_list):
     final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, open_df, percent_gains_losses, fig, stock_prices = rsi2.backtest_strategy(stock_list)
 
     #metrics
-    final_metrics = rsi2.final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices)
     trade_metrics, closed_df = rsi2.trade_metrics(stock, positions_sold) #gives list of dics for each trade and df to print
+    final_metrics = rsi2.final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices)
+
 
     #converts plotly "fig" to html
     plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-import RSIv2_html as rsi2
-import RSIv2_html_complex as rsi2_complex
+from strategies import RSIv2_html as rsi2
+from strategies import RSIv2_html_complex as rsi2_complex
 
 views = Blueprint('views', __name__)
 

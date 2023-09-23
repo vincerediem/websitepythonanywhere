@@ -228,27 +228,6 @@ def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_
     final_metrics['profit_percent'] = ((final_balance - initial_balance) / initial_balance) * 100
     final_metrics['profit_absolute'] = final_balance - initial_balance
 
-    # Additional Metrics
-    # Total number of trades
-    total_trades = closed_df.shape[0] if 'trade_id' in closed_df.columns else 0
-    final_metrics['Total Trades'] = total_trades
-
-    # Average Profit per Trade
-    average_profit_per_trade = closed_df['trade_gains'].mean() if 'trade_gains' in closed_df.columns else 0
-    final_metrics['Average Profit per Trade'] = average_profit_per_trade
-
-    # Maximum Drawdown
-    max_drawdown = (initial_balance - final_balance) / initial_balance * 100
-    final_metrics['Maximum Drawdown'] = max_drawdown
-
-    # Win Rate
-    if total_trades > 0:
-        win_trades = len(closed_df[closed_df['trade_gains'] > 0])
-        win_rate = (win_trades / total_trades) * 100
-    else:
-        win_rate = 0
-    final_metrics['Win Rate'] = win_rate
-
     # Average Holding Period for Open Positions
     if not open_df.empty:
         open_df['last_date'] = pd.to_datetime(open_df['last_date'])

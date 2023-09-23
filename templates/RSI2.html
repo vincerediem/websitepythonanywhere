@@ -1,18 +1,22 @@
-{% extends "base.html" %} {% block title %}RSI2{% endblock %} 
-{% block content %} <h1> This is the RSI Strategy page!</h1> 
+{% extends "base.html" %} {% block title %}RSI2{% endblock %}
+{% block content %} <h1> This is the RSI Strategy page!</h1>
 <form method="POST">
-    <h3 allign="center">Enter Symbol</h3>
-    <div class="form-group">
-        <label for="stock">Stock</label>
-        <input
-        type="stock"
-        class="form-control"
-        id="stock"
-        name="stock"
-        placeholder="Enter stock"
-      />
-    </div>
-    <br />
-    <button type="submit" class="btn-primary">Submit</button>
+  <h3 allign="center">Enter Symbol</h3>
+  <div class="form-group">
+    <label for="stock">Stock</label>
+    <input
+      type="stock"
+      class="form-control"
+      id="stock"
+      name="stock"
+      placeholder="Enter stock" />
+  </div>
+  <br />
+  <button type="submit" class="btn-primary">Submit</button>
 </form>
+
+<br><br>
+<h2> OR</h2>
+<br><br>
+
 {% endblock %}

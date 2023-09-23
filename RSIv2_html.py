@@ -140,15 +140,22 @@ def sell_stock(stock, row, positions, cash, trade_gains_losses, positions_sold, 
 
 def calculate_open_positions_value(positions, stock_prices):
     open_positions_value = {} # dict that include open positions and their symbols and values
+    open_summs = {}
     total_open_positions_value = 0 # total $ total of open positons
+    current_price = 0
+    number_of_open_shares = 0
 
     for stock, data in positions.items():
-        num_shares = sum(data['num_shares'])
+        number_of_open_shares = sum(data['num_shares'])
         current_price = stock_prices[stock][-1]
-        open_positions_value[stock] = num_shares * current_price
+        open_positions_value[stock] = number_of_open_shares * current_price
         total_open_positions_value += open_positions_value[stock]
+    
+    open_summs['Total value'] = total_open_positions_value
+    open_summs['Current price'] = current_price
+    open_summs['# of open shares'] = number_of_open_shares
 
-    return total_open_positions_value
+    return open_summs
 
 #makes trades a list of dicts per trade, and creates a dataframe
 def create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, trade_set):
@@ -184,6 +191,36 @@ def create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, 
     open_df = pd.DataFrame(open_data, columns=['trade_id', 'stock', 'purchase_date', 'purchase_price', 'last_date', 'last_price', 'trade_gains', 'percent_gains'])
     
     return closed_df, open_df
+
+def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summs):
+    final_metrics = {}
+
+    # general
+    final_metrics['total_invested'] = closed_df['purchase_price'].sum()
+    final_metrics['total_sold'] = closed_df['sold_price'].sum()
+
+    # portfolio
+    final_metrics['initial_balance'] = initial_balance
+    final_metrics['final_balance'] = final_balance
+    final_metrics['portfolio_change_$'] = (final_balance - initial_balance)
+    final_metrics['portfolio_change_%'] = ((final_balance - initial_balance) / initial_balance) * 100
+
+    # closed positions
+    final_metrics['total_$_gain'] = closed_df['trade_gains'].sum()
+    final_metrics['mean_$_gain'] = closed_df['trade_gains'].mean()
+    final_metrics['total_%_gain_of_invested'] = ((final_metrics['total_sold'] - final_metrics['total_invested']) / final_metrics['total_invested']) * 100
+    final_metrics['ave_%_gain'] = closed_df['percent_gain'].mean()
+    final_metrics['var_%_gain'] = closed_df['percent_gain'].var()
+    final_metrics['stdvar_%_gain'] = closed_df['percent_gain'].std()
+    final_metrics['closed_trade_count'] = closed_df['trade_gains'].count()
+
+
+    # open positions
+    final_metrics['open_shares_price'] = open_summs['Current price']
+    final_metrics['#_of_open_shares'] = open_summs['# of open shares']
+    final_metrics['value_of_open_shares'] = open_summs['Total value']
+
+    return final_metrics    
 
 #function to display final metrics
 def final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df):
@@ -286,16 +323,15 @@ def backtest_strategy(stock_list):
     #plots displayed on site
     fig = plot_graphs(historical_data, buy_dates, buy_prices, sell_dates, sell_prices, start_date, end_date)
 
+    #creates dict with opensum info
+    open_summs =  calculate_open_positions_value(positions, stock_prices)
+
     #create dataframe of open positions dict
     closed_df, open_df = create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, trade_set)
 
-    # calculate value of open positions
-    open_positions_value =  calculate_open_positions_value(positions, stock_prices)
-
-    final_balance = cash + open_positions_value
+    final_balance = cash + open_summs['Total value']
 
     return final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices
-
 
 if __name__ == '__main__':
     stocks = input("Enter stocks separated by space: ")

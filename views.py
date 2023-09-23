@@ -25,8 +25,7 @@ def RSI2_result(stock_list):
 
     #metrics
     trade_metrics, closed_df = rsi2.trade_metrics(stock, positions_sold) #gives list of dics for each trade and df to print
-    final_metrics = rsi2.final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices)
-
+    final_metrics = rsi2.final_metrics(final_balance, initial_balance, stock, positions, trade_gains_losses, percent_gains_losses, stock_prices, closed_df, open_df)
 
     #converts plotly "fig" to html
     plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')

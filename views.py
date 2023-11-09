@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from strategies import RSIv2_html as rsi2
 from strategies import RSIv2_html_complex as rsi2_complex
+from strategies import SMAv2 as sma2
 
 views = Blueprint('views', __name__)
 
@@ -65,6 +66,30 @@ def RSI2_complex():
         # Render the form directly in the template
         return render_template('RSI2_complex.html')
 
-@views.route('/SMA')
+
+@views.route('/SMA', methods=['GET', 'POST'])
 def SMA():
-    return "<h1>SMA</h1>"
+    if request.method == 'POST': #if a stock is entered, will take you to results page
+        stock_list = request.form.get('stock')
+        stock_list = stock_list.split()
+        return redirect(url_for('views.SMA_result', stock_list=','.join(stock_list)))
+    else: #else reruns page
+        return render_template('SMA2.html')
+
+@views.route('/SMA/<stock_list>')
+def SMA_result(stock_list):
+    stock_list = stock_list.split(',')
+
+    #intial backtest
+    final_balance, initial_balance, stock, positions, trade_gains_losses, positions_sold, closed_df, open_df, percent_gains_losses, fig, stock_prices, final_metrics = sma2.backtest_strategy(stock_list)
+
+    #converts plotly "fig" to html
+    plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+
+    return render_template("result.html", 
+                           stock_list=stock_list, 
+                           positions=positions, 
+                           final_metrics=final_metrics,
+                           closed_df=closed_df.to_html(),
+                           open_df=open_df.to_html(),
+                           plot_html=plot_html)

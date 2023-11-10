@@ -1,8 +1,10 @@
-{% extends "base.html" %} {% block title %}RSI2{% endblock %}
-{% block content %} <h1>SMA-Based Trading Strategy</h1>
+{% extends "base.html" %}
+{% block title %}SMA-Based Trading Strategy{% endblock %}
+{% block content %}
+<h1>SMA-Based Trading Strategy</h1>
 
 <head>
-    <title>RSI-Based Trading Strategy</title>
+    <title>SMA-Based Trading Strategy</title>
     <style>
         /* CSS styles (unchanged) */
         body {
@@ -93,12 +95,12 @@
             </form>
         </div>
 
-        <h1>RSI-Based Trading Strategy</h1>
-        <p>In this trading strategy, we utilize the Relative Strength Index
-            (RSI)
+        <h1>SMA-Based Trading Strategy</h1>
+        <p>In this trading strategy, we utilize the Simple Moving Average
+            (SMA)
             indicator to make automated decisions when buying and selling
             stocks. The
-            RSI helps us identify potential market trends and make informed
+            SMA helps us identify potential market trends and make informed
             trading
             choices.</p>
         <h2>Assumptions</h2>
@@ -109,58 +111,49 @@
             <li><strong>Initial Account Balance:</strong> The algorithm starts
                 with an
                 initial account balance of $100,000.</li>
-            <li><strong>RSI Calculation Period:</strong> The RSI indicator is
+            <li><strong>SMA Calculation Period:</strong> The SMA indicator is
                 calculated using a period of 14 days.</li>
             <li><strong>Market Close:</strong> All shares are bought using the
                 closing
                 price of the stock.</li>
             <p> <i>*To change these assumptions, scroll to the bottom and go to
-                    RSI
+                    SMA
                     Strategy with custom parameters.</i></p>
         </ul>
-        <h2>Buying Shares (RSI Below 30 - Oversold)</h2>
+        <h2>Buying Shares (Price Close to SMA)</h2>
         <ul>
-            <li><strong>RSI Below 30:</strong> When the RSI of a stock falls
-                below the
-                threshold of 30, it's considered "oversold," indicating the
-                stock's
-                price has significantly decreased.</li>
             <li><strong>Buy Signal:</strong> The algorithm generates a
-                "buy signal"
-                when this condition is met, suggesting it's a good time to buy
-                the
-                stock.</li>
-            <li><strong>Execution:</strong> Once the RSI hits 30, the algorithm
-                buys a
-                share every day as long as the RSI remains under 30.</li>
+                "buy signal" when the price of the stock is trading close to the
+                SMA. When the price is less than <strong>2%</strong> away from
+                the SMA, we are assuming the stock is at a reasonable price to
+                buy.</li>
+            <li><strong>Execution:</strong> The
+                algorithm buys a share every day as long as the stock price is
+                less than 2% away from the SMA.</li>
         </ul>
-        <h2>Selling Shares (RSI Above 65 - Overbought)</h2>
+        <h2>Selling Shares (SMA Crossover - Death Cross)</h2>
         <ul>
-            <li><strong>RSI Above 65:</strong> When the RSI of a stock rises
-                above the
-                threshold of 65, it's considered "overbought," indicating the
-                stock's
-                price has significantly increased.</li>
             <li><strong>Sell Signal:</strong> The algorithm generates a
-                "sell signal"
-                when this condition is met, suggesting it's a good time to sell
-                the
-                stock.</li>
-            <li><strong>Execution:</strong> When the RSI hits 65, the algorithm
-                sells
-                all open shares of the stock.</li>
+                "sell signal" when the price is more than <strong>5%</strong>
+                above the SMA. We assume this means that the stock is
+                overbought.</li>
+            <li><strong>Execution:</strong> When the price rises this far above
+                the SMA, the
+                algorithm sells all open shares of the stock.</li>
+            <p style="color: red;">If an error occurs, then the stock does not
+                move far enough from SMA to complete trades in this period. If
+                this happens, pick another stock or use the link at the bottom
+                of the page to specify custom parameters.</p>
         </ul>
         <p>The key advantage of this strategy is automation, which can save time
-            and
-            reduce emotional biases. However, it's important to remember that no
-            trading strategy is risk-free. Proper risk management and
-            diversification
-            are essential for successful trading.</p>
+            and reduce emotional biases. However, it's important to remember
+            that no trading strategy is risk-free. Proper risk management and
+            diversification are essential for successful trading.</p>
     </div>
 
     <br clear="left">
 
-    <a class="btn btn-primary" href="/RSI2_complex" role="button">Go to RSI
+    <a class="btn btn-primary" href="/SMA2_complex" role="button">Go to SMA
         Strategy with custom
         parameters</a>
 </body>

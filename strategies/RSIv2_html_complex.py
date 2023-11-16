@@ -196,6 +196,11 @@ def create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, 
 def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summs):
     final_metrics = {}
 
+    #calculate risk free rate
+    bond_data = yf.Ticker("^TNX")
+    risk_free_rate = bond_data.history(period="1d")["Close"].iloc[0]
+    final_metrics['risk_free_rate'] = risk_free_rate  
+
     # general
     final_metrics['total_invested'] = closed_df['purchase_price'].sum()
     final_metrics['total_sold'] = closed_df['sold_price'].sum()
@@ -214,6 +219,8 @@ def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summ
     final_metrics['var_%_gain'] = closed_df['percent_gain'].var()
     final_metrics['stdvar_%_gain'] = closed_df['percent_gain'].std()
     final_metrics['closed_trade_count'] = closed_df['trade_gains'].count()
+    final_metrics['sharpe_ratio'] = (final_metrics['ave_%_gain'] - final_metrics['risk_free_rate']) / final_metrics['stdvar_%_gain']
+
 
     if not open_df.empty:
         open_df['last_date'] = pd.to_datetime(open_df['last_date'])

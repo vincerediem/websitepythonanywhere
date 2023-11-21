@@ -2,11 +2,14 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from strategies import RSIv2_html as rsi2
 from strategies import RSIv2_html_complex as rsi2_complex
 from strategies import SMAv2 as sma2
+from strategies
 
 views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
+    display_stocks = 
+
     return render_template("home.html")
 
 @views.route('/RSI2', methods=['GET', 'POST'])

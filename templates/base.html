@@ -3,6 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <style>
+    .plot-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust as needed */
+}
+.plot-item {
+  flex: 0 0 calc(33.33% - 10px); /* Each plot item takes 33.33% width with 10px margin */
+  margin: 5px; /* Optional margin between plot items */
+  box-sizing: border-box;
+  max-width: calc(33.33% - 10px); /* Ensure max-width doesn't exceed 33.33% */
+}
+.card-body h2 {
+  margin-bottom: 10px; /* Adjust as needed to reduce space between title and graphs */
+}
+  </style>
+    <style>
       .metric-item {
         font-size: 14px; /* Change the size of the metric text */
         color: black; /* Change the color of the metric text */

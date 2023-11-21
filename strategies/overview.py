@@ -36,10 +36,13 @@ def plot_last_year_prices(stock_list):
         fig.update_xaxes(title_text="Date", row=1, col=1)
         fig.update_yaxes(title_text="Price", row=1, col=1)
 
-        fig.update_layout(height=600, width=800, title_text=f'Last Year Prices - {stock}')
+        fig.update_layout(height=300, width=500, title_text=f'1yr Prices - {stock}')
         
+        #convert to html for display
+        plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+
         # Store the plot in the dictionary
-        plots[stock] = fig.to_dict()
+        plots[stock] = plot_html
 
     return plots
     

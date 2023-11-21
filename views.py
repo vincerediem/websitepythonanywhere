@@ -2,13 +2,13 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from strategies import RSIv2_html as rsi2
 from strategies import RSIv2_html_complex as rsi2_complex
 from strategies import SMAv2 as sma2
-from strategies
+from strategies import overview as ov
 
 views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    display_stocks = 
+    display_stocks = ov.
 
     return render_template("home.html")
 

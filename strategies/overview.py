@@ -14,10 +14,11 @@ BASE_URL = 'https://paper-api.alpaca.markets'
 
 api = tradeapi.REST(API_KEY, SECRET_KEY, base_url=BASE_URL, api_version='v2')
 
-# Create a dictionary to store plots
-plots = defaultdict()
+stock_list = ["SPY", "QQQ", "DIA"]
 
 def plot_last_year_prices(stock_list):
+
+    plots = defaultdict()
 
     start_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(days=365)).strftime(
         '%Y-%m-%d')
@@ -40,15 +41,15 @@ def plot_last_year_prices(stock_list):
         # Store the plot in the dictionary
         plots[stock] = fig.to_dict()
 
+    return plots
     
 def get_historical_data(stock, start_date, end_date):
     bars = api.get_bars(stock, tradeapi.rest.TimeFrame.Day, start_date, end_date, limit=None, adjustment='raw').df
     return bars
 
 if __name__ == '__main__':
-    stock_list = ["SPY", "QQQ", "DIA"]
     
-    plot_last_year_prices(stock_list)
+    plots = plot_last_year_prices(stock_list)
     
     # Display the plots
     for stock, plot_data in plots.items():

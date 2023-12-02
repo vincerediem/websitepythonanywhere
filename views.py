@@ -9,10 +9,10 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
     stock_list = ["SPY", "QQQ", "DIA"]
-    stock_plots = ov.plot_last_year_prices(stock_list)
+    market_plot = ov.plot_last_year_prices(stock_list)
 
     return render_template("home.html",
-                           stock_plots=stock_plots)
+                           market_plot=market_plot)
 
 @views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():

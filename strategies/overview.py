@@ -56,7 +56,9 @@ def plot_last_year_prices(stock_list):
     # Create a single legend on the right
     fig.update_layout(legend=dict(orientation="v", x=1.05, y=0.5, traceorder="normal"))
 
-    fig.show()
+    plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+
+    return plot_html
 
 def get_historical_data(stock, start_date, end_date):
     bars = api.get_bars(stock, tradeapi.rest.TimeFrame.Day, start_date, end_date, limit=None, adjustment='raw').df

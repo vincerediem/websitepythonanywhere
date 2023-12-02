@@ -37,46 +37,35 @@ Home
       <h2>Market Overview</h2>
       <div class="plot-container">
         <div class="plot-item">
-          <div class="embed-responsive embed-responsive-4by3">
-            {{ stock_plots["SPY"]|safe }}
-          </div>
-        </div>
-        <div class="plot-item">
-          <div class="embed-responsive embed-responsive-4by3">
-            {{ stock_plots["QQQ"]|safe }}
-          </div>
-        </div>
-        <div class="plot-item">
-          <div class="embed-responsive embed-responsive-4by3">
-            {{ stock_plots["DIA"]|safe }}
-          </div>
+          {{ market_plot|safe }}
         </div>
       </div>
+
     </div>
 
-  </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-9">
-        <h1>About the platform</h2>
-        <p>I created this platform in the summer of 2023 to delevop my computer
-          science
-          and trading skills. My goal is to use simple technical indicators
-          availible to
-          all investors to better understand public markets.</p>
-        <p>All code to create these algorithms and this website can be found on
-          my
-          github:
-          <a href="https://github.com/vincerediem">https://github.com/vincerediem</a>.
-        </p>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <h1>About the platform</h2>
+          <p>I created this platform in the summer of 2023 to delevop my
+            computer
+            science
+            and trading skills. My goal is to use simple technical indicators
+            availible to
+            all investors to better understand public markets.</p>
+          <p>All code to create these algorithms and this website can be found
+            on
+            my
+            github:
+            <a href="https://github.com/vincerediem">https://github.com/vincerediem</a>.
+          </p>
+        </div>
+        <div class="col-lg-3">
+          <h2>My Contact Info</h2>
+          <p>kopenshaw2024@gmail.com<br>
+            <a href="https://www.linkedin.com/in/keith-openshaw/">LinkedIn</a><br>
+            (949)-633-3389</p>
+        </div>
       </div>
-      <div class="col-lg-3">
-        <h2>My Contact Info</h2>
-        <p>kopenshaw2024@gmail.com<br>
-          <a href="https://www.linkedin.com/in/keith-openshaw/">LinkedIn</a><br>
-          (949)-633-3389</p>
-      </div>
-    </div>
 
-    {% endblock %}
+      {% endblock %}

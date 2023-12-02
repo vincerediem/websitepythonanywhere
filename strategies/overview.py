@@ -4,6 +4,7 @@ import datetime
 from pytz import timezone
 import plotly.graph_objs as go
 import plotly.subplots as sp
+import yfinance as yf
 
 API_KEY = 'PK3ABIZYDFUBONQF8FCW'
 SECRET_KEY = 'sinlF6QYXaoVKA6Y6WFqTyx8zfYyuwrpwgO2WL7v'
@@ -11,7 +12,8 @@ BASE_URL = 'https://paper-api.alpaca.markets'
 
 api = tradeapi.REST(API_KEY, SECRET_KEY, base_url=BASE_URL, api_version='v2')
 
-stock_list = ["SPY", "QQQ", "DIA"]
+index_list = ["SPY", "QQQ", "DIA"]
+stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "V"]
 
 # Define a color mapping for each index
 color_mapping = {
@@ -20,7 +22,36 @@ color_mapping = {
     "DIA": "green"
 }
 
-def plot_last_year_prices(stock_list):
+def calculate_ytd_percent_change(historical_data):
+    first_close_price = historical_data['close'][0]
+    last_close_price = historical_data['close'][-1]
+    ytd_percent_change = ((last_close_price - first_close_price) / first_close_price) * 100
+    return ytd_percent_change
+
+def calculate_5y_percent_change(historical_data):
+    first_close_price = historical_data['close'][0]
+    last_close_price = historical_data['close'][-1]
+    five_year_percent_change = ((last_close_price - first_close_price) / first_close_price) * 100
+    return five_year_percent_change
+
+def create_stock_dataframe(stock_list):
+    stock_data = []  # List to store stock data
+    
+    for stock in stock_list:
+        historical_data = get_historical_data(stock)
+        
+        ytd_percent_change = calculate_ytd_percent_change(historical_data)
+        five_year_percent_change = calculate_5y_percent_change(historical_data)
+        
+        # Append stock data to the list
+        stock_data.append([stock, ytd_percent_change, five_year_percent_change])
+    
+    # Create a DataFrame to store the stock data
+    df = pd.DataFrame(stock_data, columns=["Stock", "YTD % Change", "5Y % Change"])
+
+    return df
+
+def plot_last_year_prices(index_list):
     start_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(days=365)).strftime('%Y-%m-%d')
     end_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(minutes=15)).strftime('%Y-%m-%dT%H:%M:%SZ')
     
@@ -30,7 +61,7 @@ def plot_last_year_prices(stock_list):
     
     legend_items = set()  # Set to store legend items and prevent duplicates
     
-    for stock in stock_list:
+    for stock in index_list:
         historical_data = get_historical_data(stock, start_date, end_date)
         
         # Calculate YTD percent increase for each day in the year
@@ -60,9 +91,18 @@ def plot_last_year_prices(stock_list):
 
     return plot_html
 
-def get_historical_data(stock, start_date, end_date):
+def get_historical_data(stock, start_date=None, end_date=None):
+    if start_date is None:
+        start_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(days=365)).strftime('%Y-%m-%d')
+    if end_date is None:
+        end_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(minutes=15)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    
     bars = api.get_bars(stock, tradeapi.rest.TimeFrame.Day, start_date, end_date, limit=None, adjustment='raw').df
     return bars
 
 if __name__ == '__main__':
-    plot_last_year_prices(stock_list)
+    plot_last_year_prices(index_list)
+
+    stock_dataframe = create_stock_dataframe(stock_list)
+    # Print the DataFrame
+    print(stock_dataframe)

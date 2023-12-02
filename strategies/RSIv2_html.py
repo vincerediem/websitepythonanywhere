@@ -1,5 +1,6 @@
 import alpaca_trade_api as tradeapi
 import pandas as pd
+import yfinance as yf
 import datetime
 from pytz import timezone
 import matplotlib.pyplot as plt
@@ -219,7 +220,6 @@ def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summ
     final_metrics['stdvar_%_gain'] = closed_df['percent_gain'].std()
     final_metrics['closed_trade_count'] = closed_df['trade_gains'].count()
     final_metrics['sharpe_ratio'] = (final_metrics['ave_%_gain'] - final_metrics['risk_free_rate']) / final_metrics['stdvar_%_gain']
-
 
     if not open_df.empty:
         open_df['last_date'] = pd.to_datetime(open_df['last_date'])

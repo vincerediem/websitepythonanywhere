@@ -1,5 +1,6 @@
 import alpaca_trade_api as tradeapi
 import pandas as pd
+import yfinance as yf
 import datetime
 from pytz import timezone
 import matplotlib.pyplot as plt

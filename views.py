@@ -16,7 +16,7 @@ def home():
 
     return render_template("home.html",
                            market_plot=market_plot,
-                           market_df=market_df.to_html())
+                           market_df=market_df.to_html(index=False))
 
 @views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():

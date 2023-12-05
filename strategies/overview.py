@@ -51,7 +51,18 @@ def create_stock_dataframe(stock_list):
     # Create a DataFrame to store the stock data
     df = pd.DataFrame(stock_data, columns=["Stock", "Last Close Price", "YTD % Change", "5Y % Change",])
 
-    return df
+    df = df.reset_index(drop=True)
+
+    styled_df = df.style.set_properties(**{'text-align': 'center'})
+    styled_df = styled_df.set_table_styles([{
+        'selector': 'th',
+        'props': [('background-color', 'lightgrey'), ('text-align', 'center')]
+    }])
+    
+    # Format numeric values with two decimal places
+    styled_df = styled_df.format({'YTD % Change': '{:.2f}', '5Y % Change': '{:.2f}', 'Last Close Price': '{:.2f}'})
+
+    return styled_df
 
 def plot_last_year_prices(index_list):
     start_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(days=365)).strftime('%Y-%m-%d')

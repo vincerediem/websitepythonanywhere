@@ -110,12 +110,12 @@ def SMA_complex():
         stock_list = request.form.get('stock')
         stock_list = stock_list.split()
 
-        sma_period = int(request.form['rsi_period'])
+        sma_period = int(request.form['sma_period'])
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         initial_balance = float(request.form['initial_balance'])
-        buy_sma = request.form['buy_rsi']
-        sell_sma = request.form['sell_rsi']
+        buy_sma = request.form['buy_sma']
+        sell_sma = request.form['sell_sma']
 
         # Call the backtest_strategy function with form data
         _, _, _, positions, _, _, closed_df, open_df, _, fig, _, final_metrics = sma2_complex.backtest_strategy(stock_list, sma_period, start_date, end_date, initial_balance, buy_sma, sell_sma)

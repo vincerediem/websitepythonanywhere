@@ -49,13 +49,17 @@ def get_historical_data(stock, start_date, end_date):
     bars = api.get_bars(stock, tradeapi.rest.TimeFrame.Day, start_date, end_date, limit=None, adjustment='raw').df
     return bars
 
-def set_timeframe():
-    start_date = (datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(days=365)).strftime(
-        '%Y-%m-%d')
-    end_date = (
-        datetime.datetime.now(timezone('America/New_York')) - datetime.timedelta(minutes=15)).strftime(
-        '%Y-%m-%dT%H:%M:%SZ')
-    
+def set_timeframe(start_date_str, end_date_str):
+    # Convert start_date_str to a datetime object
+    start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+
+    # Convert end_date_str to a datetime object
+    end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+
+    # Convert the datetime objects to strings in the desired format
+    start_date = start_date.strftime('%Y-%m-%d')
+    end_date = end_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
     return start_date, end_date
 
 def buy_condition(row, buy_sma):

@@ -58,22 +58,22 @@ def set_timeframe():
     
     return start_date, end_date
 
-def buy_condition(row):
+def buy_condition(row, buy_sma):
     close = row['close']
     sma = row['sma']
     price_difference_percentage = (close - sma) / sma * 100
 
     # Buy when there is less than a 10% difference between close and SMA and the difference is positive
-    return price_difference_percentage >= 0 and price_difference_percentage <= 2
+    return price_difference_percentage >= 0 and float(price_difference_percentage) <= float(buy_sma)
 
 # Modified sell condition for when the price difference is greater than 20%
-def sell_condition(stock, positions, row):
+def sell_condition(stock, positions, row, sell_sma):
     close = row['close']
     sma = row['sma']
     price_difference_percentage = (close - sma) / sma * 100
 
     # Sell when the price difference is greater than 10%
-    return stock in positions and price_difference_percentage > 5
+    return stock in positions and float(price_difference_percentage) > float(sell_sma)
 
 
 def buy_stock(stock, num_shares, row, positions, cash, index):
@@ -253,7 +253,7 @@ def backtest_strategy(stock_list, sma_period, start_date_str, end_date_str, init
     sell_prices = defaultdict(list)
 
 
-    cash = 100000  # Initialize the amount of cash you have
+    cash = initial_balance  # Initialize the amount of cash you have
     num_shares = 1
     positions = {}  # The stocks you currently own
     positions_sold = {}
@@ -271,12 +271,12 @@ def backtest_strategy(stock_list, sma_period, start_date_str, end_date_str, init
                 continue
             
             # Check for buy condition
-            if buy_condition(row):
+            if buy_condition(row, buy_sma):
                 cash = buy_stock(stock, num_shares, row, positions, cash, index)
                 buy_dates[stock].append(index)
                 buy_prices[stock].append(row['close'])
             
-            elif sell_condition(stock, positions, row):
+            elif sell_condition(stock, positions, row, sell_sma):
                 cash = sell_stock(stock, row, positions, cash, trade_gains_losses, positions_sold, index, percent_gains_losses, trade_set)
                 sell_dates[stock].append(index)
                 sell_prices[stock].append(row['close'])

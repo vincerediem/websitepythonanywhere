@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from strategies import RSIv2_html as rsi2
 from strategies import RSIv2_html_complex as rsi2_complex
 from strategies import SMAv2 as sma2
+from strategies import SMAv2_complex as sma2_complex
 from strategies import overview as ov
 
 views = Blueprint('views', __name__)
@@ -117,7 +118,7 @@ def SMA_complex():
         sell_sma = request.form['sell_rsi']
 
         # Call the backtest_strategy function with form data
-        _, _, _, positions, _, _, closed_df, open_df, _, fig, _, final_metrics = sma2.backtest_strategy(stock_list, sma_period, start_date, end_date, initial_balance, buy_sma, sell_sma)
+        _, _, _, positions, _, _, closed_df, open_df, _, fig, _, final_metrics = sma2_complex.backtest_strategy(stock_list, sma_period, start_date, end_date, initial_balance, buy_sma, sell_sma)
 
         # Convert Plotly "fig" to HTML
         plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
@@ -131,4 +132,4 @@ def SMA_complex():
                                plot_html=plot_html)
     else:
         # Render the form directly in the template
-        return render_template('RSI2_complex.html')
+        return render_template('SMA2_complex.html')

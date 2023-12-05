@@ -8,11 +8,15 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    stock_list = ["SPY", "QQQ", "DIA"]
-    market_plot = ov.plot_last_year_prices(stock_list)
+    index_list = ["SPY", "QQQ", "DIA"]
+    stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "V", "NVDA", "META", "UNH", "LLY", "JPM", "XOM", "JNJ", "PG"]
+
+    market_plot = ov.plot_last_year_prices(index_list)
+    market_df = ov.create_stock_dataframe(stock_list)
 
     return render_template("home.html",
-                           market_plot=market_plot)
+                           market_plot=market_plot,
+                           market_df=market_df.to_html())
 
 @views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():

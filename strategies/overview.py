@@ -13,7 +13,7 @@ BASE_URL = 'https://paper-api.alpaca.markets'
 api = tradeapi.REST(API_KEY, SECRET_KEY, base_url=BASE_URL, api_version='v2')
 
 index_list = ["SPY", "QQQ", "DIA"]
-stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "V"]
+stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "V", "NVDA", "META", "UNH", "LLY", "JPM", "XOM", "JNJ", "PG"]
 
 # Define a color mapping for each index
 color_mapping = {
@@ -43,11 +43,13 @@ def create_stock_dataframe(stock_list):
         ytd_percent_change = calculate_ytd_percent_change(historical_data)
         five_year_percent_change = calculate_5y_percent_change(historical_data)
         
-        # Append stock data to the list
-        stock_data.append([stock, ytd_percent_change, five_year_percent_change])
+        last_close_price = historical_data['close'].iloc[-1]
+        
+        # Append stock data to the list including the last closing price
+        stock_data.append([stock, last_close_price, ytd_percent_change, five_year_percent_change])
     
     # Create a DataFrame to store the stock data
-    df = pd.DataFrame(stock_data, columns=["Stock", "YTD % Change", "5Y % Change"])
+    df = pd.DataFrame(stock_data, columns=["Stock", "Last Close Price", "YTD % Change", "5Y % Change",])
 
     return df
 

@@ -35,6 +35,26 @@ Backtest Results
             </li>
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
+              <span style="margin-right: 1rem;">Average Trade Gain:</span>
+              {% if final_metrics['ave_%_gain'] >= 0 %}
+              <span class="badge badge-pill bg-success text-white"
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['ave_%_gain'])
+                }}%</span>
+              {% else %}
+              <span class="badge badge-pill bg-danger text-white"
+                style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['ave_%_gain'])
+                }}%</span>
+              {% endif %}
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
+              <span style="margin-right: 1rem;">Number of Trades:</span>
+              <span
+                style="font-size: 1.1rem;">{{ final_metrics['closed_trade_count']
+                }}</span>
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
               <span style="margin-right: 1rem;">Initial Balance:</span>
               <span
                 style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['initial_balance'])
@@ -42,7 +62,7 @@ Backtest Results
             </li>
             <li
               class="list-group-item d-flex justify-content-between align-items-center py-3 px-1">
-              <span style="margin-right: 1rem;">Fianal Balnce:</span>
+              <span style="margin-right: 1rem;">Final Balnce:</span>
               <span
                 style="font-size: 1.1rem;">{{ "%.2f"|format(final_metrics['final_balance'])
                 }}$</span>
@@ -93,10 +113,6 @@ Backtest Results
                 <tr>
                   <td>Sharpe Ratio</td>
                   <td>{{ "%.2f"|format(final_metrics['sharpe_ratio']) }}</td>
-                </tr>
-                <tr>
-                  <td>Closed Trade Count</td>
-                  <td>{{ final_metrics['closed_trade_count'] }}</td>
                 </tr>
               </table>
               <br>

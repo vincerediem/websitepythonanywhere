@@ -1,0 +1,7 @@
+alpaca_trade_api
+Flask==2.1.2
+matplotlib==3.5.2
+pandas==1.3.5
+plotly==5.8.0
+pytz
+yfinance

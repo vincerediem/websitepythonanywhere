@@ -1,6 +1,6 @@
 import alpaca_trade_api as tradeapi
 import pandas as pd
-import yfinance as yf
+#import yfinance as yf
 import datetime
 from pytz import timezone
 #import matplotlib.pyplot as plt
@@ -189,10 +189,11 @@ def create_trades_dfs(stock, positions, positions_sold, stock_prices, end_date, 
 def better_metrics(initial_balance, final_balance, closed_df, open_df, open_summs):
     final_metrics = {}
 
-    #calculate risk free rate
-    bond_data = yf.Ticker("^TNX")
-    risk_free_rate = bond_data.history(period="1d")["Close"].iloc[0]
-    final_metrics['risk_free_rate'] = risk_free_rate  
+   #calculate risk free rate
+    #bond_data = yf.Ticker("^TNX")
+    #bond_data.history(period="1d")["Close"].iloc[0]
+    risk_free_rate = .05 
+    final_metrics['risk_free_rate'] = risk_free_rate
 
     # general
     final_metrics['total_invested'] = closed_df['purchase_price'].sum()

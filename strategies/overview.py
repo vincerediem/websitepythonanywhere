@@ -4,7 +4,7 @@ import datetime
 from pytz import timezone
 import plotly.graph_objs as go
 import plotly.subplots as sp
-import yfinance as yf
+#import yfinance as yf
 
 API_KEY = 'PK3ABIZYDFUBONQF8FCW'
 SECRET_KEY = 'sinlF6QYXaoVKA6Y6WFqTyx8zfYyuwrpwgO2WL7v'

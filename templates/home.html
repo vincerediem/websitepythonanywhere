@@ -5,9 +5,36 @@ Home
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
-  <h1>Welcome to my Trading Application!</h1>
-  <p>--Analyze, predict and learn using technical indicators--</p>
+<div class="jumbotron text-center" style="background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 50px 25px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
+  <h1 style="font-size: 3.5em; font-weight: bold; animation: fadeIn 1.5s ease-in-out;">Welcome to My Trading Application!</h1>
+  <p style="font-size: 1.5em; font-style: italic; margin-top: 10px; letter-spacing: 1px; animation: fadeIn 2s ease-in-out;">— Analyze and test technical indicators —</p>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="container"></div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>About the Trading Application</h1>
+      <p>
+        This Flask-based trading application is designed as a personal project
+        aimed at
+        honing skills in both <strong>computer science</strong> and
+        <strong>financial markets</strong>,
+        with a specific focus on <strong>backtesting</strong> stock strategies.
+        The platform emphasizes
+        not just the use of <em>technical indicators</em> but also the critical
+        process of backtesting
+        to evaluate the effectiveness of trading strategies before deploying
+        them in live market conditions.
+      </p>
+      </div>
+  </div>
 </div>
 
 <div class="container">
@@ -17,7 +44,8 @@ Home
       <p>Perform advanced RSI backtesting on your selected stocks. Just input
         the
         stocks you want to analyze and let the system do the rest.</p>
-      <a class="btn btn-primary" href="/RSI2" role="button">Go to RSI Strategy</a>
+      <a class="btn btn-primary" href="/RSI2" role="button">Go to RSI
+        Strategy</a>
       <a class="btn btn-outline-primary" href="/RSI2_complex" role="button">Go
         to RSI
         Strategy (custom parameters)</a>
@@ -26,7 +54,8 @@ Home
       <h2>SMA Analysis</h2>
       <p>Simple Moving Average (SMA) is a great tool to identify the direction
         of a stock's price trend. Get started with our SMA analysis.</p>
-      <a class="btn btn-primary" href="/SMA" role="button">Go to SMA Analysis</a>
+      <a class="btn btn-primary" href="/SMA" role="button">Go to SMA
+        Analysis</a>
       <a class="btn btn-outline-primary" href="/SMA_complex" role="button">Go
         to SMA
         Strategy (custom parameters)</a>
@@ -55,23 +84,69 @@ Home
     </div>
   </div>
 
+  <div class="container"></div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Backtesting Overview</h1>
+      <p>
+        At the core of this platform is the ability to <strong>backtest trading
+          strategies</strong> using
+        historical market data. While developed to be used on technical data, the 
+        source code can easily be modified to apply to all sorts of different
+        trading metrics. The backtesting process involves applying a
+        strategy to historical stock prices
+        to simulate how it would have performed in the past. This allows traders
+        to:
+      </p>
+      <ul>
+        <li><strong>Evaluate Strategy Performance:</strong> Determine whether a
+          strategy would have been profitable.</li>
+        <li><strong>Identify Weaknesses:</strong> Expose scenarios where the
+          strategy might fail, allowing for refinement.</li>
+        <li><strong>Optimize Parameters:</strong> Experiment with different
+          settings to maximize returns or minimize risk.</li>
+      </ul>
+
+      <h3>Alpaca API Integration for Backtesting</h3>
+      <p>
+        The application utilizes the <strong>Alpaca API</strong> to retrieve
+        <em>historical stock data</em> and execute virtual trades
+        during backtests. The API serves several purposes, including:
+      </p>
+      <ul>
+        <li><strong>Accurate Data Retrieval:</strong> Ensures access to
+          reliable, up-to-date historical data for realistic simulations.</li>
+        <li><strong>Realistic Simulations:</strong> Enables simulations of real
+          trading conditions, reflecting market price fluctuations.</li>
+        <li><strong>Simulated Trades:</strong> Trades are executed under
+          realistic conditions during backtests, mimicking real stock
+          orders.</li>
+      </ul>
+
+      <h2>Key Ideas</h2>
+      <p><strong>Hypothesis-Driven Development:</strong> Every trading strategy
+        is based on a hypothesis (e.g.,
+        "RSI below 30 signals oversold conditions").
+        Backtesting allows the user to validate this hypothesis with historical
+        data, ensuring that strategies are tested before real trading.</p>
+      <p><strong>Data-Driven Decision Making:</strong> The application leverages
+        historical stock data, helping users avoid emotional trading
+        decisions and rely on concrete data instead. This leads to more
+        informed, data-driven strategy refinement.</p>
+      <p><strong>Iterative Testing and Optimization:</strong> Backtesting is an
+        <em>iterative process</em>, allowing users to adjust parameters
+        and combine indicators to improve the robustness of their strategies in
+        various market conditions.</p>
+      <p><strong>Risk Management:</strong> Backtesting also serves to expose
+        risks, helping users develop strategies with built-in risk controls
+        (e.g., setting stop losses or adjusting capital allocation based on
+        historical performance).</p>
+    </div>
+  </div>
+</div>
+
   <div class="container">
     <div class="row">
-      <div class="col-lg-9">
-        <h1>About the platform</h2>
-        <p>I created this platform in the summer of 2023 to delevop my
-          computer
-          science
-          and trading skills. My goal is to use simple technical indicators
-          availible to
-          all investors to better understand public markets.</p>
-        <p>All code to create these algorithms and this website can be found
-          on
-          my
-          github:
-          <a href="https://github.com/vincerediem">https://github.com/vincerediem</a>.
-        </p>
-      </div>
       <div class="col-lg-3">
         <h2>My Contact Info</h2>
         <p>kopenshaw2024@gmail.com<br>

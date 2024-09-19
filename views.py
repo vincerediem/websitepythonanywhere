@@ -19,6 +19,10 @@ def home():
                            market_plot=market_plot,
                            market_df=market_df.to_html(index=False))
 
+@views.route('/About')
+def About():
+    return render_template('About.html')
+
 @views.route('/RSI2', methods=['GET', 'POST'])
 def RSI2():
     if request.method == 'POST': #if a stock is entered, will take you to results page

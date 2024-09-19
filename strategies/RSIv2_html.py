@@ -3,7 +3,7 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from pytz import timezone
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from collections import defaultdict
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
